@@ -26,7 +26,7 @@ Eyedentify-AI is a computer vision-based tool designed to assist ophthalmologist
 
 ## 🧠 ML & Technical Stack
 
-tbd
+tbd - explain what all requirements.txt are used for
 
 
 ## 🌱 Future Features (Post-MVP Vision)
