@@ -8,6 +8,36 @@ from tqdm import tqdm
 
 import os
 
+def resize_with_padding(image, target_size=512):
+
+    # get original height and weight
+    h, w = image.shape[:2]
+
+    # calculate scaling factor so longer size becomes target size
+    scale = target_size / max(h, w)
+
+    # compute new dimensions to keep aspect ratio
+    new_w, new_h = int(w * scale), int(h * scale)
+    
+    # resize the img to new dimensions
+    resized = cv2.resize(image, (new_w, new_h), interpolation=cv2.INTER_AREA)
+    
+    # calculate how much padding is needed for 512x512
+    delta_w = target_size - new_w # delta width
+    delta_h = target_size - new_h # delta height
+
+    # divide padding equally on all sides
+    top, bottom = delta_h // 2, delta_h - (delta_h // 2)
+    left, right = delta_w // 2, delta_w - (delta_w // 2)
+    
+    color = [0, 0, 0]  # black padding
+
+    # add padding to resized img
+    padded_image = cv2.copyMakeBorder(resized, top, bottom, left, right, cv2.BORDER_CONSTANT, value=color)
+    
+    # return final img of 512x512
+    return padded_image
+
 def clean_resize_imgs(input_path, output_path, label):
 
     skipped_files = []
@@ -34,17 +64,12 @@ def clean_resize_imgs(input_path, output_path, label):
                 skipped_files.append((file, "Not a 3-channel RGB image"))
                 continue
 
-            # resize to standard size
-            # can be changed later to optimize accuracy vs speed vs memory use
-            try:
-                resized_img = cv2.resize(img, (224, 224))
-            except Exception as e:
-                skipped_files.append((file, f"Resize error: {str(e)}"))
-                continue
+            # resize to 512x512 with padding
+            padded_img = resize_with_padding(img, target_size=512)
 
             # save to output folder
             # will overwrite existing files with same name without warning
-            cv2.imwrite(os.path.join(output_path, file), resized_img)
+            cv2.imwrite(os.path.join(output_path, file), padded_img)
 
         except Exception as e:
             print(f"Error processing {file}: {e}")
