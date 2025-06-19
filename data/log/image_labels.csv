@@ -16,7 +16,6 @@ filename,label
 161.jpg,healthy
 129.jpeg,healthy
 160.jpg,healthy
-174.jpg,healthy
 148.jpg,healthy
 49.jpg,healthy
 61.jpg,healthy
@@ -24,6 +23,7 @@ filename,label
 59.jpg,healthy
 71.jpg,healthy
 65.jpg,healthy
+164.jpg,healthy
 158.jpg,healthy
 159.jpg,healthy
 165.jpg,healthy
@@ -32,6 +32,7 @@ filename,label
 58.jpg,healthy
 8.jpg,healthy
 66.jpg,healthy
+72.jpg,healthy
 167.jpg,healthy
 99.jpg,healthy
 173.jpg,healthy
@@ -55,6 +56,7 @@ filename,label
 15.jpg,healthy
 17.jpg,healthy
 116.jpg,healthy
+102.jpg,healthy
 123.jpeg,healthy
 103.jpg,healthy
 117.jpg,healthy
@@ -79,12 +81,11 @@ filename,label
 21.jpg,healthy
 35.jpg,healthy
 108.jpg,healthy
+120.jpg,healthy
 134.jpg,healthy
-156.jpeg,healthy
 135.jpg,healthy
 121.jpg,healthy
 109.jpg,healthy
-34.jpg,healthy
 20.jpg,healthy
 36.jpg,healthy
 22.jpg,healthy
@@ -94,7 +95,6 @@ filename,label
 23.jpg,healthy
 37.jpg,healthy
 33.jpg,healthy
-27.jpg,healthy
 177.jpeg,healthy
 133.jpg,healthy
 26.jpg,healthy
@@ -124,6 +124,7 @@ filename,label
 5.jpg,healthy
 57.jpg,healthy
 43.jpg,healthy
+55.jpg,healthy
 7.jpg,healthy
 41.jpg,healthy
 69.jpg,healthy
@@ -150,7 +151,6 @@ filename,label
 87.jpg,healthy
 179.jpg,healthy
 86.jpg,healthy
-92.jpg,healthy
 144.jpg,healthy
 150.jpg,healthy
 45.jpg,healthy
@@ -172,11 +172,11 @@ filename,label
 52.jpg,healthy
 46.jpg,healthy
 63.jpg,infected
+77.jpg,infected
+176.jpg,infected
 88.jpg,infected
 172.jpeg,infected
-177.jpg,infected
 89.jpg,infected
-76.jpg,infected
 164.jpeg,infected
 62.jpg,infected
 74.jpg,infected
@@ -201,6 +201,7 @@ filename,label
 66.jpg,infected
 165.jpeg,infected
 72.jpg,infected
+99.jpg,infected
 173.jpeg,infected
 98.jpg,infected
 73.jpg,infected
@@ -213,8 +214,8 @@ filename,label
 115.jpg,infected
 154.jpeg,infected
 114.jpg,infected
+100.jpg,infected
 128.jpg,infected
-29.jpg,infected
 15.jpg,infected
 17.jpg,infected
 102.png,infected
@@ -261,7 +262,6 @@ filename,label
 123.jpg,infected
 122.jpg,infected
 136.jpg,infected
-23.jpg,infected
 37.jpg,infected
 33.jpg,infected
 27.jpg,infected
@@ -273,6 +273,7 @@ filename,label
 32.jpg,infected
 161.jpeg,infected
 18.jpg,infected
+24.jpg,infected
 30.jpg,infected
 125.jpg,infected
 131.jpg,infected
@@ -290,26 +291,23 @@ filename,label
 56.jpg,infected
 81.jpg,infected
 95.jpg,infected
-143.jpg,infected
 170.jpeg,infected
 142.jpg,infected
-94.jpg,infected
 80.jpg,infected
 5.jpg,infected
 57.jpg,infected
 43.jpg,infected
 55.jpg,infected
 7.jpg,infected
-41.jpg,infected
 69.jpg,infected
 96.jpg,infected
-82.jpg,infected
 140.jpg,infected
 141.jpg,infected
 83.jpg,infected
 97.jpg,infected
 68.jpg,infected
 40.jpg,infected
+54.jpg,infected
 6.jpg,infected
 78.jpg,infected
 2.jpg,infected
@@ -327,6 +325,7 @@ filename,label
 3.jpg,infected
 51.jpg,infected
 79.jpg,infected
+47.jpg,infected
 53.jpg,infected
 1.jpg,infected
 146.jpg,infected
@@ -339,3 +338,4 @@ filename,label
 147.jpg,infected
 167.jpeg,infected
 52.jpg,infected
+46.jpg,infected
