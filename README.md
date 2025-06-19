@@ -47,10 +47,9 @@ Planned: PyTorch, Grad-CAM, Flask
 
 ---
 
-> This project is actively evolving. Logs, plots, and notebooks are structured for traceability and can be extended for medical imaging beyond conjunctivitis.
-
----
-
 ## 🤝 Collaboration & Contact
-> This project is part of an independent initiative to build deployable AI tools in healthcare.  
-> For collaboration or feedback, feel free to connect.
+This project is part of an independent initiative to build deployable AI tools in healthcare.  
+For collaboration or feedback, feel free to connect.
+
+
+> This project is actively evolving. Logs, plots, and notebooks are structured for traceability and can be extended for medical imaging beyond conjunctivitis.
