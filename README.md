@@ -1,4 +1,4 @@
-# 👁️ Eyedentify-AI: Red Eye Detection Using Deep Learning  
+# 👁️ Eyedentify-AI: Conjunctivitis Detection Using Deep Learning  
 **🚧 Status:** In Progress — Expected Completion: July 31, 2025
 
 **Eyedentify-AI** is a tool that classifies red eye (conjunctivitis) from patient-submitted images. It combines medical image preprocessing, signal-based blur detection, and deep learning-based classification.  
