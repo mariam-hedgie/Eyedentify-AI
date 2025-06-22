@@ -47,9 +47,14 @@ Planned: PyTorch, Grad-CAM, Flask
 
 ---
 
-## 🤝 Collaboration & Contact
-This project is part of an independent initiative to build deployable AI tools in healthcare.  
-For collaboration or feedback, feel free to connect.
+## 🔒 License
+This project is part of an independent initiative to build deployable AI tools in healthcare.
+
+This project is not open source. All rights reserved © 2025 Mariam Husain.
+
+Unauthorized use, distribution, or reproduction of any part of this repository is strictly prohibited.
+
+For licensing, academic use, or collaboration inquiries, please contact me.
 
 
 > This project is actively evolving. Logs, plots, and notebooks are structured for traceability and can be extended for medical imaging beyond conjunctivitis.
