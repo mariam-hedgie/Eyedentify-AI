@@ -11,11 +11,13 @@ The goal is to build a fully functional and explainable AI workflow — from raw
 | Component                        | Skills Applied                      |
 |----------------------------------|--------------------------------------|
 | GitHub repo + folder setup       | Version control, modular pipeline design     |
-| Image resizing (224×224)         | OpenCV, consistent model input prep  |
-| FFT-based blur detection         | NumPy, frequency domain filtering    |
-| Dynamic thresholds by class      | Distribution-aware logic, automation |
+| Virtual environment setup        | Dependency management, reproducibility |
+| Image resizing (224×224)         | OpenCV, model input preparation  |
+| FFT-based blur detection         | NumPy, frequency domain analysis    |
+| Sharpness histogram visualization | Matplotlib, exploratory data analysis |
+| Dynamic filtering by class distribution      | Distribution-aware logic, automation |
 | Label mapping & blur logging     | pandas, data hygiene                 |
-| Sharpness histograms             | matplotlib, interpretability         |
+| YOLOv8 eye detector: custom-trained             | Roboflow labeling, PyTorch training, inference logic        |
 
 ---
 
