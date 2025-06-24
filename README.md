@@ -23,10 +23,10 @@ The goal is to build a fully functional and explainable AI workflow — from raw
 
 ## 🧠 Current Logic
 
-- All images are resized and pre-cleaned.
-- Blur detection is done using **Fast Fourier Transform (FFT)**.
-- Class-specific sharpness scores are analyzed to dynamically threshold and filter the bottom 5% of images.
-- Clean images are mapped to labels; blurry or corrupt ones are automatically logged.
+	•	🔍 Preprocessing: Images are resized, normalized, and passed through an FFT-based blur detector.
+	•	🚫 Blur Filtering: Class-specific sharpness scores determine a dynamic threshold.
+	•	📦 Crop Engine: A custom-trained YOLOv8 model detects eyes from patient images.
+	•	🏷️ Label Mapping: Images are linked to labels; filtered outliers are logged and excluded.
 
 ---
 
@@ -42,21 +42,26 @@ The goal is to build a fully functional and explainable AI workflow — from raw
 
 ---
 
-## 🛠️ Stack
+## 🛠️ Tech Stack
 
-Python, OpenCV, NumPy, pandas, Matplotlib  
-Planned: PyTorch, Grad-CAM, Flask
+| Layer | Tech Stack |
+| ----- | -----------|
+| Preprocessing | Python, OpenCV, NumPy, pandas, Matplotlib |
+| Detection | YOLOv8 (Ultralytics), Roboflow annotations |
+| Classification | PyTorch, Torchvision |
+| Explainability | Grad-CAM (planned) |
+| Web Interface | Flask (planned), SQLite or JSON-based state tracking |
 
 ---
 
 ## 🔒 License
-This project is part of an independent initiative to build deployable AI tools in healthcare.
+This is a private project under active development by **Mariam Husain** as part of an independent initiative to build deployable, explainable AI tools for healthcare.
 
-This project is not open source. All rights reserved © 2025 Mariam Husain.
+**All rights reserved © 2025 Mariam Husain.**
+Unauthorized use, copying, or distribution is strictly prohibited.
 
-Unauthorized use, distribution, or reproduction of any part of this repository is strictly prohibited.
-
-For licensing, academic use, or collaboration inquiries, please contact me.
+For academic use, licensing, or collaboration:
+📩 Contact: [email]()
 
 
 > This project is actively evolving. Logs, plots, and notebooks are structured for traceability and can be extended for medical imaging beyond conjunctivitis.
