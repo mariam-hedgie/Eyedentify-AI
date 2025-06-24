@@ -1,6 +1,12 @@
-train: ../train/images
-val: ../valid/images
-test: ../test/images
+# data.yaml inside the yolo-eye-detector
+# when running training cd to yolo-eye-detector
+
+
+path: .  # means: "this folder"
+
+train: images/train
+val: images/val
+test: images/test
 
 nc: 1
 names: ['eye']
