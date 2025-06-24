@@ -6,11 +6,11 @@ The goal is to build a fully functional and explainable AI workflow — from raw
 
 ---
 
-## ✅ Week 1 Accomplishments 
+## ✨ First 10 Days Highlights  
 
 | Component                        | Skills Applied                      |
 |----------------------------------|--------------------------------------|
-| GitHub repo + folder setup       | Version control, reproducibility     |
+| GitHub repo + folder setup       | Version control, modular pipeline design     |
 | Image resizing (224×224)         | OpenCV, consistent model input prep  |
 | FFT-based blur detection         | NumPy, frequency domain filtering    |
 | Dynamic thresholds by class      | Distribution-aware logic, automation |
