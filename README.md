@@ -61,7 +61,7 @@ This is a private project under active development by **Mariam Husain** as part 
 Unauthorized use, copying, or distribution is strictly prohibited.
 
 For academic use, licensing, or collaboration:
-📩 Contact: [email]()
+📩 Contact: [email](mailto:mariamh1121@gmail.com)
 
 
 > This project is actively evolving. Logs, plots, and notebooks are structured for traceability and can be extended for medical imaging beyond conjunctivitis.
