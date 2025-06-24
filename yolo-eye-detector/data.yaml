@@ -11,9 +11,9 @@ test: images/test
 nc: 1
 names: ['eye']
 
-roboflow:
-  workspace: mariam-uymfr
-  project: eye-detector-iz14z
-  version: 2
-  license: CC BY 4.0
-  url: https://universe.roboflow.com/mariam-uymfr/eye-detector-iz14z/dataset/2
+# roboflow:
+#  workspace: mariam-uymfr
+#  project: eye-detector-iz14z
+#  version: 2
+#  license: CC BY 4.0
+#  url: https://universe.roboflow.com/mariam-uymfr/eye-detector-iz14z/dataset/2
