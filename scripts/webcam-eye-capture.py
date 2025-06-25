@@ -40,8 +40,13 @@ while True:
 
             eye_crop = roi[y1:y2, x1:x2]
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S%f")
-            if eye_crop.size > 0:
+            
+            key = cv2.waitKey(1) & 0xFF
+            if key == ord("c") and eye_crop.size > 0:
                 cv2.imwrite(str(save_path / f"eye_{timestamp}.jpg"), eye_crop)
+                print(f"✅ Saved eye image at {timestamp}")
+            if key == ord("q"):
+                break
 
         frame[y:y + h // 2, x:x + w] = roi
         break  # Only process first face
