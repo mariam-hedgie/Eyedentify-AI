@@ -1,64 +1,54 @@
 import cv2
+import torch
 from pathlib import Path
-from ultralytics import YOLO
-import datetime
+from datetime import datetime
 
-# Set up paths
-project_root = Path(__file__).resolve().parent.parent
-model_path = project_root / "runs" / "detect" / "train2" / "weights" / "best.pt"
-save_base = project_root / "data" / "webcam_capture"
-(save_base / "1eye").mkdir(parents=True, exist_ok=True)
-(save_base / "2eyes").mkdir(parents=True, exist_ok=True)
+# === Load YOLOv8 model ===
+model_path = "models/yolov8_eye.pt"  # Update if needed
+model = torch.hub.load('ultralytics/yolov5', 'custom', path=model_path)
 
-# Load model
-model = YOLO(str(model_path))
+# === Haar Cascade for face detection ===
+face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
 
-# Open webcam
-cap = cv2.VideoCapture(0)  # 0 = default camera
-img_id = 0
+# === Setup webcam ===
+cap = cv2.VideoCapture(0)
+if not cap.isOpened():
+    print("❌ Could not open webcam.")
+    exit()
 
-print("📷 Starting webcam... Press 'q' to quit.")
+print("📷 Press 'q' to quit.")
+save_dir = Path("data/split/webcam_capture")
+save_dir.mkdir(parents=True, exist_ok=True)
 
-while cap.isOpened():
+while True:
     ret, frame = cap.read()
     if not ret:
-        print("❌ Failed to grab frame")
+        print("⚠️ Frame not read correctly.")
         break
 
-    # Run YOLO inference
-    results = model(frame)[0]
-    boxes = results.boxes.xyxy.cpu().numpy().astype(int)
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5)
 
-    # Draw bounding boxes
-    for i, (x1, y1, x2, y2) in enumerate(boxes):
-        cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
+    for (x, y, w, h) in faces:
+        eye_region = frame[y:y + h // 2, x:x + w]  # upper half of face
+        results = model(eye_region)
 
-    # Show preview
-    cv2.imshow("Eye Detection - Press 's' to Save, 'q' to Quit", frame)
+        for *box, conf, cls in results.xyxy[0]:
+            x1, y1, x2, y2 = map(int, box)
+            cv2.rectangle(eye_region, (x1, y1), (x2, y2), (0, 255, 0), 2)
 
-    key = cv2.waitKey(1) & 0xFF
+            # Save crop
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S%f")
+            crop = eye_region[y1:y2, x1:x2]
+            if crop.size > 0:
+                cv2.imwrite(str(save_dir / f"eye_{timestamp}.jpg"), crop)
 
-    if key == ord('s'):
-        timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-        if len(boxes) == 1:
-            x1, y1, x2, y2 = boxes[0]
-            crop = frame[y1:y2, x1:x2]
-            filename = save_base / "1eye" / f"eye_{timestamp}.jpg"
-            cv2.imwrite(str(filename), crop)
-            print(f"✅ Saved 1 eye crop to {filename}")
+        # Display the detected region
+        frame[y:y + h // 2, x:x + w] = eye_region
+        break  # Only use first face for now
 
-        elif len(boxes) >= 2:
-            for i, (x1, y1, x2, y2) in enumerate(boxes[:2]):
-                crop = frame[y1:y2, x1:x2]
-                filename = save_base / "2eyes" / f"eye{i+1}_{timestamp}.jpg"
-                cv2.imwrite(str(filename), crop)
-                print(f"✅ Saved eye {i+1} crop to {filename}")
-
-        else:
-            print("⚠️ No eyes detected to save")
-
-    elif key == ord('q'):
-        print("👋 Quitting...")
+    cv2.imshow("YOLO Eye Detection", frame)
+    if cv2.waitKey(1) & 0xFF == ord("q"):
         break
 
 cap.release()
