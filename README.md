@@ -1,12 +1,12 @@
 # 👁️ Eyedentify-AI: Conjunctivitis Detection Using Deep Learning  
-**🚧 Status:** In Progress — Expected Completion: July 31, 2025
+**🚧 Status:** In Progress — Expected Completion: End July, 2025
 
 **Eyedentify-AI** is a tool that classifies red eye (conjunctivitis) from patient-submitted images. It combines medical image preprocessing, signal-based blur detection, and deep learning-based classification.  
 The goal is to build a fully functional and explainable AI workflow — from raw images to web deployment — tailored for real-world use.
 
 ---
 
-## ✨ First 10 Days Highlights  
+## ✨ First 2 Weeks Highlights  
 
 | Component                        | Skills Applied                      |
 |----------------------------------|--------------------------------------|
@@ -34,11 +34,11 @@ The goal is to build a fully functional and explainable AI workflow — from raw
 
 | Week | Focus Area                            |
 |------|----------------------------------------|
-| 2    | Train ResNet18 baseline classifier     |
-| 3    | Add Grad-CAM visualizations            |
-| 4    | Build Flask app (upload + webcam)      |
-| 5    | Patient portal + symptom timeline      |
-| 6    | Demo polish + final write-up           |
+| 3    | Train ResNet18 baseline classifier     |
+| 4    | Add Grad-CAM visualizations            |
+| 5    | Build Flask app (upload + webcam)      |
+| 6    | Patient portal + symptom timeline      |
+| 7    | Demo polish + final write-up           |
 
 ---
 
