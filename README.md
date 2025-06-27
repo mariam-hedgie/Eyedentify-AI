@@ -24,8 +24,11 @@ The goal is to build a fully functional and explainable AI workflow — from raw
 ## 🧠 Current Logic
 
 •	🔍 Preprocessing: Images are resized, normalized, and passed through an FFT-based blur detector.
+<br>
 •	🚫 Blur Filtering: Class-specific sharpness scores determine a dynamic threshold.
+<br>
 •	📦 Crop Engine: A custom-trained YOLOv8 model detects eyes from patient images.
+<br>
 •	🏷️ Label Mapping: Images are linked to labels; filtered outliers are logged and excluded.
 
 ---
