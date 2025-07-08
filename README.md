@@ -6,7 +6,7 @@ The goal is to build a fully functional and explainable AI workflow — from raw
 
 ---
 
-## ✨ First 2 Weeks Highlights  
+## ✨ First 3 Weeks Highlights  
 
 | Component                        | Skills Applied                      |
 |----------------------------------|--------------------------------------|
@@ -35,13 +35,11 @@ The goal is to build a fully functional and explainable AI workflow — from raw
 
 ## 🔭 Planned Next Steps
 
-| Week | Focus Area                            |
-|------|----------------------------------------|
-| 3    | Train ResNet18 baseline classifier     |
-| 4    | Add Grad-CAM visualizations            |
-| 5    | Build Flask app (upload + webcam)      |
-| 6    | Patient portal + symptom timeline      |
-| 7    | Demo polish + final write-up           |
+• Train ResNet18 baseline classifier 
+• Add Grad-CAM visualizations
+• Build Flask app (upload + webcam)     
+• Patient portal + symptom timeline      
+• Demo polish + final write-up           
 
 ---
 
