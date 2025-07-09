@@ -6,7 +6,7 @@ The goal is to build a fully functional and explainable AI workflow — from raw
 
 ---
 
-## ✨ First 3 Weeks Highlights  
+## ✨ First 1 month Highlights  
 
 | Component                        | Skills Applied                      |
 |----------------------------------|--------------------------------------|
