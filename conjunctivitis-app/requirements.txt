@@ -1,0 +1,8 @@
+Flask
+torch
+torchvision
+torchaudio
+mediapipe
+numpy
+Pillow
+opencv-python

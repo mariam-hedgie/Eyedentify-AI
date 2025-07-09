@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Conjunctivitis Detector</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+      background: #f7f9fc;
+      color: #333;
+    }
+
+    .tagline {
+      font-size: 18px;
+      color: #475569;
+      margin-bottom: 30px;
+      font-style: italic;
+    }
+
+    .left-panel {
+      flex: 1;
+      padding: 60px 40px;
+      background-color: #f0f4f8;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .left-panel h1 {
+      font-size: 32px;
+      margin-bottom: 20px;
+      color: #2563eb;
+    }
+
+    .left-panel p {
+      font-size: 16px;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .left-panel ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .left-panel li {
+      margin-bottom: 10px;
+      line-height: 1.5;
+    }
+
+    .left-panel li::before {
+      content: '✓';
+      margin-right: 8px;
+      color: #2563eb;
+    }
+
+    .right-panel {
+      flex: 1;
+      background-color: #f0f4f8;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      padding: 20px;
+    }
+
+    .camera-wrapper {
+      position: relative;
+      width: 80%;
+      aspect-ratio: 4 / 5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    video, #capturedImg {
+      width: 100%;
+      height: 100%;
+      border-radius: 20px;
+      object-fit: cover;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    .floating-controls {
+      position: absolute;
+      bottom: 7%;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 20px;
+      z-index: 10;
+    }
+
+    #captureBtn, #analyzeBtn {
+      z-index: 11;
+    }
+
+    #overlay {
+      position: absolute;
+      border: 3px dashed rgba(255, 255, 255, 0.6);
+      border-radius: 50% / 40%;
+      width: 60%;
+      height: 65%;
+      pointer-events: none;
+      top: 12%;
+    }
+
+    .controls {
+      margin-top: 25px;
+      display: flex;
+      gap: 20px;
+    }
+
+    #captureBtn {
+      position: absolute;
+      width: 55px;
+      height: 55px;
+      border-radius: 50%;
+      border: 3px solid white;     /* outer ring */
+      background-color: transparent;
+      position: relative;
+      cursor: pointer;
+      transition: transform 0.1s ease-in-out;
+    }
+
+    #captureBtn::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 40px;
+      height: 40px;
+      background-color: white;     /* inner filled circle */
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+
+    #captureBtn:active {
+      transform: scale(0.95);
+    }
+
+    #analyzeBtn {
+      background-color: #2bb036;
+      border: none;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 6px;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    #analyzeBtn:hover {
+      background-color: #2bb036;
+    }
+
+    .result {
+      margin-top: 25px;
+      font-size: 18px;
+      font-weight: 600;
+      color: #eee;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="left-panel">
+    <h1>👁️ Instant Eye Check</h1>
+    <p class="tagline">Snap. Scan. Spot the Signs of Conjunctivitis.</p>
+    <p>
+      <strong>Your eyes tell a story — let AI help you read it.</strong><br />
+      Just line up your face, tap the shutter, and get instant insights into possible conjunctivitis — in under 5 seconds.
+    </p>
+    <ul>
+      <li><strong>⚡ Fast & Private</strong> — runs entirely on your device</li>
+      <li><strong>🧠 Smart AI</strong> — powered by ResNet + MediaPipe</li>
+      <li><strong>📋 Just a Screening</strong> — not a medical diagnosis</li>
+    </ul>
+  </div>
+
+  <div class="right-panel">
+    <div class="camera-wrapper">
+      <video id="video" autoplay playsinline muted></video>
+      <img id="capturedImg" style="display:none;" />
+      <div id="overlay"></div>
+
+      <div class="floating-controls">
+        <button id="captureBtn"></button>
+        <button id="analyzeBtn" style="display:none;">Analyze</button>
+      </div>
+    </div>
+
+    <div class="result" id="resultText"></div>
+  </div>
+
+  <script src="/static/script.js"></script>
+</body>
+</html>
