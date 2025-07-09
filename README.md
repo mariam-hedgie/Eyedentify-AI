@@ -1,68 +1,127 @@
-# 👁️ Eyedentify-AI: Conjunctivitis Detection Using Deep Learning  
-**🚧 Status:** In Progress — Expected Completion: End July, 2025
+# 👁️ Conjunctivitis Detection Web App
 
-**Eyedentify-AI** is a tool that classifies red eye (conjunctivitis) from patient-submitted images. It combines medical image preprocessing, signal-based blur detection, and deep learning-based classification.  
-The goal is to build a fully functional and explainable AI workflow — from raw images to web deployment — tailored for real-world use.
+This is a Flask-based web application that uses a webcam to capture a photo of a user's face, detects the eyes using MediaPipe, and runs a deep learning model (ResNet18) to predict the probability of conjunctivitis in the left and right eyes.
 
 ---
 
-## ✨ First 3 Weeks Highlights  
+## 🚀 Features
 
-| Component                        | Skills Applied                      |
-|----------------------------------|--------------------------------------|
-| GitHub repo + folder setup       | Version control, modular pipeline design     |
-| Virtual environment setup        | Dependency management, reproducibility |
-| Image resizing (224×224)         | OpenCV, model input preparation  |
-| FFT-based blur detection         | NumPy, frequency domain analysis    |
-| Sharpness histogram visualization | Matplotlib, exploratory data analysis |
-| Dynamic filtering by class distribution      | Distribution-aware logic, automation |
-| Label mapping & blur logging     | pandas, data hygiene                 |
-| YOLOv8 eye detector: custom-trained             | Roboflow labeling, PyTorch training, inference logic        |
+* Fullscreen camera with oval face guide
+* Capture and preview image before analysis
+* Detect face and crop both eyes using MediaPipe
+* Run inference using a PyTorch model (ResNet18)
+* Display left and right eye conjunctivitis probabilities
 
 ---
 
-## 🧠 Current Logic
+## 🧰 Requirements
 
-•	🔍 Preprocessing: Images are resized, normalized, and passed through an FFT-based blur detector.
-<br>
-•	🚫 Blur Filtering: Class-specific sharpness scores determine a dynamic threshold.
-<br>
-•	📦 Crop Engine: A custom-trained YOLOv8 model detects eyes from patient images.
-<br>
-•	🏷️ Label Mapping: Images are linked to labels; filtered outliers are logged and excluded.
+* Python 3.10 or 3.11 (do **not** use 3.12+)
+* macOS (Intel)
+* Pip
 
 ---
 
-## 🔭 Planned Next Steps
+## 🛠️ Setup Instructions (Intel Mac)
 
-• Train ResNet18 baseline classifier 
-• Add Grad-CAM visualizations
-• Build Flask app (upload + webcam)     
-• Patient portal + symptom timeline      
-• Demo polish + final write-up           
+1. **Clone this repository**
+
+   ```bash
+   git clone https://github.com/your-username/conjunctivitis-app.git
+   cd conjunctivitis-app
+   ```
+
+2. **Create and activate virtual environment**
+
+   ```bash
+   python3 -m venv venv
+   source venv/bin/activate
+   ```
+
+3. **Install dependencies**
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. **Download your trained model**
+
+   Place your model weights file (e.g., `resnet18_weights.pth`) in the project folder.
+
+   Make sure `app.py` matches your model structure:
+
+   ```python
+   from torchvision import models
+   model = models.resnet18(pretrained=False)
+   model.fc = torch.nn.Linear(model.fc.in_features, 1)
+   model.load_state_dict(torch.load("resnet18_weights.pth", map_location=torch.device('cpu')))
+   ```
+
+5. **Run the Flask app**
+
+   ```bash
+   python app.py
+   ```
+
+6. **Visit the app**
+   Open your browser and go to [http://127.0.0.1:5000](http://127.0.0.1:5000)
 
 ---
 
-## 🛠️ Tech Stack
+## 🧪 How It Works
 
-| Layer | Tech Stack |
-| ----- | -----------|
-| Preprocessing | Python, OpenCV, NumPy, pandas, Matplotlib |
-| Detection | YOLOv8 (Ultralytics), Roboflow annotations |
-| Classification | PyTorch, Torchvision |
-| Explainability | Grad-CAM (planned) |
-| Web Interface | Flask (planned), SQLite or JSON-based state tracking |
+* The frontend accesses your webcam and draws an oval where your face should go.
+* When you click 📸, it captures an image and sends it to the backend.
+* The backend:
+
+  * Uses MediaPipe to detect eye landmarks
+  * Crops left and right eye regions
+  * Preprocesses each crop
+  * Runs them through a PyTorch model
+  * Returns the probability of conjunctivitis for each eye
+* The frontend displays the results clearly on screen.
 
 ---
 
-## 🔒 License
-This is a private project under active development by **Mariam Husain** as part of an independent initiative to build deployable, explainable AI tools for healthcare.
+## 🧾 Dependencies (from `requirements.txt`)
 
-**All rights reserved © 2025 Mariam Husain.**
-Unauthorized use, copying, or distribution is strictly prohibited.
+```
+Flask
+torch
+torchvision
+torchaudio
+mediapipe
+numpy
+Pillow
+opencv-python
+```
 
-For academic use, licensing, or collaboration:
-📩 [Contact Me](mailto:mariamh1121@gmail.com)
+---
 
+## 📦 Folder Structure
 
-> This project is actively evolving. Logs, plots, and notebooks are structured for traceability and can be extended for medical imaging beyond conjunctivitis.
+```
+conjunctivitis-app/
+├── app.py
+├── templates/
+│   └── index.html
+├── static/
+│   └── script.js
+├── resnet18_weights.pth
+├── requirements.txt
+└── README.md
+```
+
+---
+
+## 🧠 Notes
+
+* This version uses CPU for inference. For GPU, modify the model loading and use `map_location='cuda'` if available.
+* Currently uses only MediaPipe's first detected face.
+* TorchScript or ONNX conversion is supported if you plan to port to mobile.
+
+---
+
+## 📬 Contact
+
+Built by \[Your Name]. Feel free to reach out with questions or suggestions!

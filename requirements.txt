@@ -1,21 +1,8 @@
-# core deep learning framework PyTorch for building & training models
+Flask
 torch
 torchvision
-
-# loading, procesing, manipulating images from patient uploads
+torchaudio
+mediapipe
+numpy
+Pillow
 opencv-python
-
-# lighweight backend framework
-flask
-
-# data handling
-pandas
-
-# visualizing outputs
-matplotlib
-
-# progress bars for loops — useful during training or batch predictions
-tqdm
-
-# interactive notebooks for prototyping
-jupyter
