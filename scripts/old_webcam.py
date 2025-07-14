@@ -19,7 +19,7 @@ print("📸 Running Eye Detector. Press 'q' to quit.")
 
 save_path = Path("data/split/webcam_capture")
 save_path.mkdir(parents=True, exist_ok=True)
-
+.
 while True:
     ret, frame = cap.read()
     if not ret:
