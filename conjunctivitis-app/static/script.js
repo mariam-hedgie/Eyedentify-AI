@@ -6,6 +6,8 @@ const analyzeBtn = document.getElementById('analyzeBtn');
 const result = document.getElementById('result');
 const capturedImg = document.getElementById('captured');
 
+// previous 
+/*
 navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
   video.srcObject = stream;
 });
@@ -16,6 +18,26 @@ video.addEventListener('loadedmetadata', () => {
 
   drawOvalGuide();
 });
+*/
+
+//new
+// ✅ Get webcam stream (ensure permission is granted and you're on localhost or HTTPS)
+navigator.mediaDevices.getUserMedia({ video: true })
+  .then(stream => {
+    video.srcObject = stream;
+  })
+  .catch(err => {
+    console.error("Error accessing webcam:", err);
+    result.innerText = "Webcam access denied or unavailable.";
+  });
+
+// ✅ Safari-compatible metadata load and video play
+video.onloadedmetadata = () => {
+  video.play(); // Important for Safari
+  overlay.width = video.videoWidth;
+  overlay.height = video.videoHeight;
+  drawOvalGuide();
+};
 
 function drawOvalGuide() {
   ctx.clearRect(0, 0, overlay.width, overlay.height);

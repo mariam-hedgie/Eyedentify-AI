@@ -9,3 +9,4 @@ __pycache__/
 data/
 yolo-eye-detector/images/
 yolo-eye-detector/labels/
+conjunctivitis-app/resnet18_weights.pth
