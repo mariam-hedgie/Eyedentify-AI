@@ -96,12 +96,20 @@ analyzeBtn.onclick = () => {
 
 
 document.getElementById('tryAgainBtn').addEventListener('click', () => {
-  // Reset view
+  // 1. Reset panels
   document.getElementById('resultContent').style.display = 'none';
   document.getElementById('introContent').style.display = 'block';
 
-  // Optionally: clear result text and/or captured image
-  document.getElementById('resultMessage').textContent = '';
-  document.getElementById('capturedImg').style.display = 'none';
-  document.getElementById('video').style.display = 'block';
+  // 2. Clear result message
+  document.getElementById('resultMessage').innerHTML = '';
+
+  // 3. Reset UI elements
+  capturedImg.style.display = 'none';
+  video.style.display = 'block';
+  overlay.style.display = 'block';
+  captureBtn.style.display = 'inline-block';
+  analyzeBtn.style.display = 'none';
+
+  // 4. Redraw oval guide (optional)
+  drawOvalGuide();
 });
