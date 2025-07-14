@@ -191,8 +191,14 @@
   <div class="right-panel">
     <div class="camera-wrapper">
       <video id="video" autoplay playsinline muted></video>
-      <img id="capturedImg" style="display:none;" />
-      <div id="overlay"></div>
+      
+
+      <!--older-->
+      <!--<div id="overlay"></div>--> 
+
+      <canvas id="overlay"></canvas> <!-- ✅ FIXED -->
+
+      <img id="capturedImg" style="display:none;" /> <!--moved down from above canvas-->
 
       <div class="floating-controls">
         <button id="captureBtn"></button>
