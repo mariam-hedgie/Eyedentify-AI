@@ -16,7 +16,14 @@ model = models.resnet18(pretrained=False)
 model.fc = torch.nn.Linear(model.fc.in_features, 1)  # binary classifier
 
 # Load weights
-model.load_state_dict(torch.load("resnet18_weights.pth", map_location=torch.device('cpu')))
+#model.load_state_dict(torch.load("resnet18_weights.pth", map_location=torch.device('cpu')))
+
+import os
+
+weights_path = os.path.join(os.path.dirname(__file__), "resnet18_weights.pth")
+model.load_state_dict(torch.load(weights_path, map_location=torch.device('cpu')))
+
+
 model.eval()
 
 # === MediaPipe setup ===
