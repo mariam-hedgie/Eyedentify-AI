@@ -7,10 +7,15 @@ from PIL import Image
 import numpy as np
 import mediapipe as mp
 from torchvision import models
+from pytorch_grad_cam import GradCAMPlusPlus
+from pytorch_grad_cam.utils.model_targets import BinaryClassifierOutputTarget
+from pytorch_grad_cam.utils.image import show_cam_on_image
+import cv2
 
 app = Flask(__name__)
 
 # === Load model ===
+
 # Define architecture
 model = models.resnet18(pretrained=False)
 model.fc = torch.nn.Linear(model.fc.in_features, 1)  # binary classifier
@@ -97,23 +102,54 @@ def predict():
 
     left_prob = predict_eye(left_eye_crop)
     right_prob = predict_eye(right_eye_crop)
+
+    def generate_gradcam_image(model,eye_crop_np, predicted_label):
+
+        # Keep a version for overlay
+        img_np = cv2.resize(eye_crop_np, (224, 224)) / 255.0
+
+        # Feed the same original image into transform for model input
+        img_uint8 = (img_np*255).astype(np.uint8)
+        input_tensor = preprocess(img_uint8).unsqueeze(0)
+
+        # Set up Grad-CAM++
+        target_layers = [model.layer4[-1]]
+        cam = GradCAMPlusPlus(model=model, target_layers=target_layers)
+
+        # Create target
+        target = [BinaryClassifierOutputTarget(predicted_label)]
+        grayscale_cam = cam(input_tensor=input_tensor, targets=target)[0]
+
+        # Apply CAM
+        cam_image = show_cam_on_image(img_np, grayscale_cam, use_rgb=True)
+        cam_pil = Image.fromarray(cam_image)
+
+        return cam_pil
     
     def generate_gradcam():
-        #TODO: write function, add parameters if necessary
-        return gradcam_image
 
-    # Generate Grad-CAM image (as PIL Image or NumPy array)
-    gradcam_image = generate_gradcam() 
+        left_gradcam = generate_gradcam_image(model, left_eye_crop, int(left_prob > 0.5))
+        right_gradcam = generate_gradcam_image(model, right_eye_crop, int(right_prob > 0.5))
+        return left_gradcam, right_gradcam
+
+
+    # Generate Grad-CAM image
+    left_cam, right_cam = generate_gradcam()
 
     # Convert to base64
-    buffer = BytesIO()
-    gradcam_image.save(buffer, format="PNG")
-    encoded_image = base64.b64encode(buffer.getvalue()).decode("utf-8")
+    buffer_left = BytesIO()
+    left_cam.save(buffer_left, format = "PNG")
+    encoded_left = base64.b64encode(buffer_left.getvalue()).decode("utf-8")
+
+    buffer_right = BytesIO()
+    right_cam.save(buffer_right, format = "PNG")
+    encoded_right = base64.b64encode(buffer_right.getvalue()).decode("utf-8")
 
     return jsonify({
-        "left_eye_prob": round(left_prob, 2),
-        "right_eye_prob": round(right_prob, 2),
-        "gradcam_image": encoded_image
+    "left_eye_prob": round(left_prob, 2),
+    "right_eye_prob": round(right_prob, 2),
+    "left_gradcam": encoded_left,
+    "right_gradcam": encoded_right
     })
 
 if __name__ == '__main__':

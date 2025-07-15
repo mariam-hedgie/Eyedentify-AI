@@ -20,7 +20,7 @@ from pathlib import Path
 # Safe for notebooks: use current working directory
 ROOT_DIR = Path.cwd()  # or manually specify Path("/your/project/root")
 DATA_DIR = ROOT_DIR / "data" / "filtered"
-MODEL_WEIGHTS = Path("/Users/mariamhusain/Desktop/resnet18_weights.pth") #use local path
+MODEL_WEIGHTS = Path("/Users/mariamhusain/Desktop/eyedentify-ai/conjunctivitis-app/resnet18_weights.pth") #use local path
 
 # Load image paths
 healthy_imgs = list((DATA_DIR / "healthy_eye").glob("*.jpg"))

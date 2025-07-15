@@ -72,11 +72,23 @@ captureBtn.onclick = () => {
 
 // ANALYZE button logic
 analyzeBtn.onclick = () => {
+
+  // TEMP
+  if (!capturedImg.src) {
+    alert("no image found. click capture");
+    return;
+  }
+
+  console.log("analyze clicked");
+  //
+
   fetch('/predict', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ image: capturedImg.src })
   })
+
+
   .then(response => response.json())
   .then(data => {
     if (data.error) {
@@ -88,8 +100,11 @@ analyzeBtn.onclick = () => {
       const message = `
         👁️ <strong>Left Eye:</strong> ${leftProb}% chance of conjunctivitis<br>
         👁️ <strong>Right Eye:</strong> ${rightProb}% chance of conjunctivitis<br><br>
-        <strong>🧠 Model Explanation:</strong><br>
-        <img src="data:image/png;base64,${data.gradcam_image}" alt="GradCAM" style="max-width: 100%; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.2);" />
+        <strong>🧠 Grad-CAM Visualizations:</strong><br>
+        🔴 Left Eye:<br>
+        <img src="data:image/png;base64,${data.left_gradcam}" alt="Left GradCAM" style="max-width: 100%; border-radius: 8px; margin-bottom: 16px;" /><br>
+        🔴 Right Eye:<br>
+        <img src="data:image/png;base64,${data.right_gradcam}" alt="Right GradCAM" style="max-width: 100%; border-radius: 8px;" />
       `;
       showResultOnLeft(message);
     }
