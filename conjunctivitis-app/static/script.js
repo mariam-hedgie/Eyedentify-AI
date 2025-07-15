@@ -87,7 +87,9 @@ analyzeBtn.onclick = () => {
 
       const message = `
         👁️ <strong>Left Eye:</strong> ${leftProb}% chance of conjunctivitis<br>
-        👁️ <strong>Right Eye:</strong> ${rightProb}% chance of conjunctivitis
+        👁️ <strong>Right Eye:</strong> ${rightProb}% chance of conjunctivitis<br><br>
+        <strong>🧠 Model Explanation:</strong><br>
+        <img src="data:image/png;base64,${data.gradcam_image}" alt="GradCAM" style="max-width: 100%; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.2);" />
       `;
       showResultOnLeft(message);
     }
