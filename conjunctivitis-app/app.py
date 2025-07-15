@@ -97,10 +97,23 @@ def predict():
 
     left_prob = predict_eye(left_eye_crop)
     right_prob = predict_eye(right_eye_crop)
+    
+    def generate_gradcam():
+        #TODO: write function, add parameters if necessary
+        return gradcam_image
+
+    # Generate Grad-CAM image (as PIL Image or NumPy array)
+    gradcam_image = generate_gradcam() 
+
+    # Convert to base64
+    buffer = BytesIO()
+    gradcam_image.save(buffer, format="PNG")
+    encoded_image = base64.b64encode(buffer.getvalue()).decode("utf-8")
 
     return jsonify({
         "left_eye_prob": round(left_prob, 2),
-        "right_eye_prob": round(right_prob, 2)
+        "right_eye_prob": round(right_prob, 2),
+        "gradcam_image": encoded_image
     })
 
 if __name__ == '__main__':
