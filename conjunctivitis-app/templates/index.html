@@ -193,13 +193,55 @@
     <div id="resultContent" style="display: none;">
       <h1>🩺 Screening Result</h1>
       <p id="resultMessage">...</p>
-      <button id="tryAgainBtn" style="margin-top: 20px; padding: 10px 20px; font-size: 16px; background-color: #2563eb; color: white; border: none; border-radius: 5px; cursor: pointer;">
-        Try Again
-      </button>
+
+      <div style="margin-top: 20px; display: flex; gap: 12px;">
+        <button id="tryAgainBtn" style="padding: 10px 20px; font-size: 16px; background-color: #2563eb; color: white; border: none; border-radius: 5px; cursor: pointer;">
+          Try Again
+        </button>
+
+        <button id="learnBtn" style="padding: 10px 20px; font-size: 16px; background-color: #f97316; color: white; border: none; border-radius: 5px; cursor: pointer;">
+          Learn With Me
+        </button>
+      </div>
+
+      <!-- Grad-CAM area, hidden by default -->
+      <div id="gradcamContent" style="display: none; margin-top: 24px;">
+        <p><strong>🧠 Grad-CAM Visualizations:</strong></p>
+      
+        <div style="display: flex; flex-wrap: wrap; gap: 24px; justify-content: center; margin-top: 12px;">
+          
+          <!-- LEFT EYE -->
+          <div style="flex: 1 1 45%; max-width: 400px; text-align: center;">
+            <img id="leftGradcam" style="width: 100%; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);" />
+            <p id="leftExplanation" style="margin-top: 12px; font-size: 14px; color: #475569;">
+              <!-- Default text -->
+              This heatmap shows areas of attention in the left eye. Brighter regions indicate stronger model focus.
+            </p>
+          </div>
+      
+          <!-- RIGHT EYE -->
+          <div style="flex: 1 1 45%; max-width: 400px; text-align: center;">
+            <img id="rightGradcam" style="width: 100%; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);" />
+            <p id="rightExplanation" style="margin-top: 12px; font-size: 14px; color: #475569;">
+              This heatmap shows attention in the right eye. Look for reddish zones around the conjunctiva for signs.
+            </p>
+          </div>
+      
+        </div>
+      </div>
     </div>
   </div>
 
   <div class="right-panel">
+    <div class="instructions" style="margin-bottom: 20px; text-align: center; max-width: 80%; font-size: 15px; line-height: 1.6; color: #475569;">
+      <p><strong>📸 Before You Snap:</strong></p>
+      <ul style="list-style: none; padding: 0; margin-top: 8px;">
+        <li>Remove glasses and makeup</li>
+        <li>Open your eyes wide</li>
+        <li>Use bright, even lighting</li>
+      </ul>
+    </div>
+
     <div class="camera-wrapper" style="position: relative; width: 80%; aspect-ratio: 4 / 5;">
       <video id="video" autoplay playsinline muted style="width: 100%; border-radius: 20px; object-fit: cover; transform: scaleX(-1);"></video>
       <canvas id="overlay" style="position: absolute; top: 0; left: 0; border-radius: 20px; pointer-events: none;"></canvas>

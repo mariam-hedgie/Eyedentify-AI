@@ -5,6 +5,11 @@ const captureBtn = document.getElementById('captureBtn');
 const analyzeBtn = document.getElementById('analyzeBtn');
 const result = document.getElementById('result');
 const capturedImg = document.getElementById('capturedImg');
+const learnBtn = document.getElementById('learnBtn');
+const gradcamContent = document.getElementById('gradcamContent');
+const leftGradcam = document.getElementById('leftGradcam');
+const rightGradcam = document.getElementById('rightGradcam');
+
 
 navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
   video.srcObject = stream;
@@ -73,15 +78,6 @@ captureBtn.onclick = () => {
 // ANALYZE button logic
 analyzeBtn.onclick = () => {
 
-  // TEMP
-  if (!capturedImg.src) {
-    alert("no image found. click capture");
-    return;
-  }
-
-  console.log("analyze clicked");
-  //
-
   fetch('/predict', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -99,14 +95,13 @@ analyzeBtn.onclick = () => {
 
       const message = `
         👁️ <strong>Left Eye:</strong> ${leftProb}% chance of conjunctivitis<br>
-        👁️ <strong>Right Eye:</strong> ${rightProb}% chance of conjunctivitis<br><br>
-        <strong>🧠 Grad-CAM Visualizations:</strong><br>
-        🔴 Left Eye:<br>
-        <img src="data:image/png;base64,${data.left_gradcam}" alt="Left GradCAM" style="max-width: 100%; border-radius: 8px; margin-bottom: 16px;" /><br>
-        🔴 Right Eye:<br>
-        <img src="data:image/png;base64,${data.right_gradcam}" alt="Right GradCAM" style="max-width: 100%; border-radius: 8px;" />
+        👁️ <strong>Right Eye:</strong> ${rightProb}% chance of conjunctivitis
       `;
       showResultOnLeft(message);
+
+      // Save Grad-CAM images for later display
+      leftGradcam.src = `data:image/png;base64,${data.left_gradcam}`;
+      rightGradcam.src = `data:image/png;base64,${data.right_gradcam}`;
     }
   });
 };
@@ -120,13 +115,23 @@ document.getElementById('tryAgainBtn').addEventListener('click', () => {
   // 2. Clear result message
   document.getElementById('resultMessage').innerHTML = '';
 
-  // 3. Reset UI elements
+  // 3. resert grad cam
+  gradcamContent.style.display = 'none';
+  learnBtn.style.display = 'inline-block';
+
+  // 4. Reset UI elements
   capturedImg.style.display = 'none';
   video.style.display = 'block';
   overlay.style.display = 'block';
   captureBtn.style.display = 'inline-block';
   analyzeBtn.style.display = 'none';
 
-  // 4. Redraw oval guide (optional)
+  // 5. Redraw oval guide (optional)
   drawOvalGuide();
 });
+
+learnBtn.onclick = () => {
+  gradcamContent.style.display = 'block'; // show grad cam container
+  learnBtn.style.display = 'none'; // hide button after click
+};
+
