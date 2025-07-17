@@ -92,16 +92,46 @@ analyzeBtn.onclick = () => {
     } else {
       const leftProb = Math.round(data.left_eye_prob * 100);
       const rightProb = Math.round(data.right_eye_prob * 100);
+      const avgProb = (leftProb + rightProb) / 2;
 
+      let label = '';
+      let advice = '';
+
+      if (avgProb >= 60) {
+        label = 'Likely Conjunctivitis';
+        advice = '⚠️ Please consult an eye specialist.';
+      } else if (avgProb >= 40) {
+        label = 'Uncertain';
+        advice = '🧐 You’re close to the threshold — monitor symptoms or consult if unsure.';
+      } else {
+        label = 'Likely Normal';
+        advice = '✅ No strong signs of conjunctivitis. Keep eyes clean and healthy!';
+      }
+      
       const message = `
-        👁️ <strong>Left Eye:</strong> ${leftProb}% chance of conjunctivitis<br>
-        👁️ <strong>Right Eye:</strong> ${rightProb}% chance of conjunctivitis
+        
+        <p style="font-size: 18px; color: ${avgProb >= 60 ? '#dc2626' : avgProb >= 40 ? '#d97706' : '#16a34a'};">
+  ${label}
+        </p>
+        <p>${advice}</p>
       `;
       showResultOnLeft(message);
 
       // Save Grad-CAM images for later display
       leftGradcam.src = `data:image/png;base64,${data.left_gradcam}`;
       rightGradcam.src = `data:image/png;base64,${data.right_gradcam}`;
+
+      function getEyeAdvice(prob, side) {
+        if (prob >= 60) return `${side} Eye: High attention on redness — 📍 consult a doctor.`;
+        if (prob >= 40) return `${side} Eye: Mild signs — 🧐 monitor symptoms.`;
+        return `${side} Eye: Low risk — ✅ no concerning signs.`;
+      }
+      
+      document.getElementById('leftExplanation').textContent =
+        `🔬 ${leftProb}% chance. ` + getEyeAdvice(leftProb, "Left");
+      
+      document.getElementById('rightExplanation').textContent =
+        `🔬 ${rightProb}% chance. ` + getEyeAdvice(rightProb, "Right");
     }
   });
 };
