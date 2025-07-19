@@ -1,16 +1,62 @@
 from flask import Flask, render_template, request, jsonify
+import torch
+import torchvision.transforms as transforms
 import base64
 from io import BytesIO
 from PIL import Image
 import numpy as np
 import mediapipe as mp
+from torchvision import models
+from pytorch_grad_cam import GradCAMPlusPlus
+from pytorch_grad_cam.utils.model_targets import BinaryClassifierOutputTarget
+from pytorch_grad_cam.utils.image import show_cam_on_image
+import cv2
 import requests
-import os
+import sys
+from tqdm import tqdm
 
 app = Flask(__name__)
 
-# Set Hugging Face Inference API URL
-HUGGINGFACE_API_URL = "https://api-inference.huggingface.co/models/luckyjain1/eyedentify-ai"
+import os
+
+def download_with_progress(url, destination):
+    if os.path.exists(destination):
+        print("Weights already downloaded.")
+        return
+
+    print(f"Downloading model weights to {destination}")
+    response = requests.get(url, stream=True)
+    total_size = int(response.headers.get('content-length', 0))
+    block_size = 1024  # 1 Kibibyte
+
+    with open(destination, 'wb') as file, tqdm(
+        desc="Downloading",
+        total=total_size,
+        unit='iB',
+        unit_scale=True,
+        unit_divisor=1024,
+    ) as bar:
+        for data in response.iter_content(block_size):
+            file.write(data)
+            bar.update(len(data))
+
+#earlier weights loading without download link
+#weights_path = os.path.join(os.path.dirname(__file__), "resnet18_weights.pth")
+#model.load_state_dict(torch.load(weights_path, map_location=torch.device('cpu')))
+
+# Define model architecture
+model = models.resnet18(pretrained=False)
+model.fc = torch.nn.Linear(model.fc.in_features, 1)  # binary classifier
+
+# Google Drive direct download link
+model_url = "https://drive.google.com/uc?export=download&id=15fLW_oFGFnqYSMa4BfGnXjeYIWo2bNr_"
+weights_path = os.path.join(os.path.dirname(__file__), "resnet18_weights.pth")
+
+download_with_progress(model_url, weights_path)
+
+# Load weights
+model.load_state_dict(torch.load(weights_path, map_location=torch.device('cpu')))
+model.eval()
 
 # === MediaPipe setup ===
 mp_face_mesh = mp.solutions.face_mesh
@@ -22,12 +68,13 @@ RIGHT_EYE_IDS = [362, 263, 386, 387, 388, 373, 374, 380]
 PAD = 10
 
 # === Preprocessing pipeline ===
-def preprocess_image(image):
-    image = image.resize((224, 224))
-    image = np.array(image)
-    image = np.transpose(image, (2, 0, 1))  # C, H, W
-    image = image / 255.0  # Normalize to [0, 1]
-    return image.tolist()  # Convert to list for JSON
+preprocess = transforms.Compose([
+    transforms.ToPILImage(),
+    transforms.Resize((224, 224)),
+    transforms.ToTensor(),
+    transforms.Normalize(mean=[0.485, 0.456, 0.406],
+                         std=[0.229, 0.224, 0.225])
+])
 
 @app.route('/')
 def index():
@@ -50,20 +97,18 @@ def predict():
     except Exception as e:
         return jsonify({"error": f"Invalid image data: {str(e)}"}), 400
 
-    # Convert to numpy array
+    # Decode base64 image
     image_np = np.array(image_pil)
     h, w, _ = image_np.shape
 
-    # Detect face using MediaPipe
+    # Detect face
     with mp_face_mesh.FaceMesh(static_image_mode=True) as face_mesh:
         results = face_mesh.process(image_np)
 
     if not results.multi_face_landmarks:
         return jsonify({"error": "No face detected"}), 400
-
     face_landmarks = results.multi_face_landmarks[0]
 
-    # Crop eyes based on face landmarks
     def crop_eye(eye_ids):
         xs = [int(face_landmarks.landmark[i].x * w) for i in eye_ids]
         ys = [int(face_landmarks.landmark[i].y * h) for i in eye_ids]
@@ -71,52 +116,70 @@ def predict():
         ymin, ymax = max(min(ys) - PAD, 0), min(max(ys) + PAD, h)
         return image_np[ymin:ymax, xmin:xmax]
 
+    # Crop both eyes
     left_eye_crop = crop_eye(LEFT_EYE_IDS)
     right_eye_crop = crop_eye(RIGHT_EYE_IDS)
 
-    # Preprocess image for Hugging Face model
-    left_eye_input = preprocess_image(Image.fromarray(left_eye_crop))
-    right_eye_input = preprocess_image(Image.fromarray(right_eye_crop))
+    # Predict each
+    def predict_eye(crop):
+        input_tensor = preprocess(crop).unsqueeze(0)  # [1, 3, 224, 224]
+        with torch.no_grad():
+            output = model(input_tensor)
+            return torch.sigmoid(output).item()
 
-    # Step 3: Send request to Hugging Face API
-    def get_model_prediction(image_input):
-        response = requests.post(
-            HUGGINGFACE_API_URL,
-            json={"inputs": image_input}
-        )
-        if response.status_code == 200:
-            return response.json()
-        else:
-            return {"error": f"Error from Hugging Face: {response.text}"}
+    left_prob = predict_eye(left_eye_crop)
+    right_prob = predict_eye(right_eye_crop)
 
-    left_prediction = get_model_prediction(left_eye_input)
-    right_prediction = get_model_prediction(right_eye_input)
+    def generate_gradcam_image(model,eye_crop_np, predicted_label):
 
-    # Check if there is an error in predictions
-    if "error" in left_prediction:
-        return jsonify(left_prediction), 400
-    if "error" in right_prediction:
-        return jsonify(right_prediction), 400
+        # Keep a version for overlay
+        img_np = cv2.resize(eye_crop_np, (224, 224)) / 255.0
 
-    # Extract probabilities from model response
-    left_prob = left_prediction.get("label", 0)
-    right_prob = right_prediction.get("label", 0)
+        # Feed the same original image into transform for model input
+        img_uint8 = (img_np*255).astype(np.uint8)
+        input_tensor = preprocess(img_uint8).unsqueeze(0)
 
-    # Placeholder Grad-CAM function (can be adjusted for Hugging Face integration later)
-    def generate_placeholder_gradcam():
-        # This part can be replaced with Grad-CAM logic if the model supports it
-        return None, None  # Placeholder for now
+        # Set up Grad-CAM++
+        target_layers = [model.layer4[-1]]
+        cam = GradCAMPlusPlus(model=model, target_layers=target_layers)
 
-    left_gradcam, right_gradcam = generate_placeholder_gradcam()
+        # Create target
+        target = [BinaryClassifierOutputTarget(predicted_label)]
+        grayscale_cam = cam(input_tensor=input_tensor, targets=target)[0]
 
-    # Return results
+        # Apply CAM
+        cam_image = show_cam_on_image(img_np, grayscale_cam, use_rgb=True)
+        cam_pil = Image.fromarray(cam_image)
+
+        return cam_pil
+    
+    def generate_gradcam():
+
+        left_gradcam = generate_gradcam_image(model, left_eye_crop, int(left_prob > 0.5))
+        right_gradcam = generate_gradcam_image(model, right_eye_crop, int(right_prob > 0.5))
+        return left_gradcam, right_gradcam
+
+
+    # Generate Grad-CAM image
+    left_cam, right_cam = generate_gradcam()
+
+    # Convert to base64
+    buffer_left = BytesIO()
+    left_cam.save(buffer_left, format = "PNG")
+    encoded_left = base64.b64encode(buffer_left.getvalue()).decode("utf-8")
+
+    buffer_right = BytesIO()
+    right_cam.save(buffer_right, format = "PNG")
+    encoded_right = base64.b64encode(buffer_right.getvalue()).decode("utf-8")
+
     return jsonify({
-        "left_eye_prob": round(left_prob, 2),
-        "right_eye_prob": round(right_prob, 2),
-        "left_gradcam": left_gradcam,
-        "right_gradcam": right_gradcam
+    "left_eye_prob": round(left_prob, 2),
+    "right_eye_prob": round(right_prob, 2),
+    "left_gradcam": encoded_left,
+    "right_gradcam": encoded_right
     })
 
 if __name__ == "__main__":
+    # Use the PORT environment variable, default to 5000 if not set
     port = int(os.environ.get("PORT", 5000))
     app.run(debug=True, host='0.0.0.0', port=port)
