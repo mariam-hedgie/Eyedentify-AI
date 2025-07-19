@@ -40,22 +40,26 @@ def download_with_progress(url, destination):
             file.write(data)
             bar.update(len(data))
 
-#earlier weights loading without download link
-#weights_path = os.path.join(os.path.dirname(__file__), "resnet18_weights.pth")
-#model.load_state_dict(torch.load(weights_path, map_location=torch.device('cpu')))
+
 
 # Define model architecture
 model = models.resnet18(pretrained=False)
 model.fc = torch.nn.Linear(model.fc.in_features, 1)  # binary classifier
 
 # Google Drive direct download link
-model_url = "https://drive.google.com/uc?export=download&id=15fLW_oFGFnqYSMa4BfGnXjeYIWo2bNr_"
-weights_path = os.path.join(os.path.dirname(__file__), "resnet18_weights.pth")
+#model_url = "https://drive.google.com/uc?export=download&id=15fLW_oFGFnqYSMa4BfGnXjeYIWo2bNr_"
+#weights_path = os.path.join(os.path.dirname(__file__), "resnet18_weights.pth")
 
-download_with_progress(model_url, weights_path)
+#earlier weights loading without download link
+weights_path = os.path.join(os.path.dirname(__file__), "resnet18_weights.pth")
+model.load_state_dict(torch.load(weights_path, map_location=torch.device('cpu')))
+
+#download_with_progress(model_url, weights_path)
+download_with_progress(model, weights_path)
 
 # Load weights
-model.load_state_dict(torch.load(weights_path, map_location=torch.device('cpu')))
+#model.load_state_dict(torch.load(weights_path, map_location=torch.device('cpu')))
+model.load_state_dict(torch.load(weights_path, map_location=torch.device('cpu'), weights_only=False))
 model.eval()
 
 # === MediaPipe setup ===
@@ -179,7 +183,25 @@ def predict():
     "right_gradcam": encoded_right
     })
 
-if __name__ == "__main__":
+#if __name__ == "__main__":
     # Use the PORT environment variable, default to 5000 if not set
-    port = int(os.environ.get("PORT", 5000))
+#    port = int(os.environ.get("PORT", 5000))
+#    app.run(debug=True, host='0.0.0.0', port=port)
+
+import socket
+
+def get_free_port(default=5000):
+    try:
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            s.bind(("", default))
+            return default
+    except OSError:
+        # If default port is in use, pick any free port
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            s.bind(("", 0))
+            return s.getsockname()[1]
+
+if __name__ == "__main__":
+    port = get_free_port()
+    print(f"Running on port {port}")
     app.run(debug=True, host='0.0.0.0', port=port)
