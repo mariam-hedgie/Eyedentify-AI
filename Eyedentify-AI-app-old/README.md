@@ -1,127 +1,121 @@
-# 👁️ Conjunctivitis Detection Web App
 
-This is a Flask-based web application that uses a webcam to capture a photo of a user's face, detects the eyes using MediaPipe, and runs a deep learning model (ResNet18) to predict the probability of conjunctivitis in the left and right eyes.
+# 👁️ Eyedentify.AI – Conjunctivitis Detection Web App
+
+This is a real-time web-based screening tool that detects signs of **conjunctivitis (pink eye)** using a webcam and deep learning.  
+It captures an image of your face, preprocesses it on the frontend, and uses a **cloud-hosted model** (via Hugging Face Spaces) to analyze each eye using **Grad-CAM-enhanced deep learning**.
 
 ---
 
 ## 🚀 Features
 
-* Fullscreen camera with oval face guide
-* Capture and preview image before analysis
-* Detect face and crop both eyes using MediaPipe
-* Run inference using a PyTorch model (ResNet18)
-* Display left and right eye conjunctivitis probabilities
+- 📸 Fullscreen camera interface with oval face guide
+- 🧠 ResNet18 deep learning model with Grad-CAM++ visualizations
+- 👁️ Eye detection powered by MediaPipe Face Mesh (via HF backend)
+- ⚙️ Lightweight Flask frontend; inference offloaded to Hugging Face
+- 🔐 All processing is user-controlled — no long-term image storage
 
 ---
 
 ## 🧰 Requirements
 
-* Python 3.10 or 3.11 (do **not** use 3.12+)
-* macOS (Intel)
-* Pip
+> This app runs entirely in your browser + server (no training required)
+
+**Local Environment (Flask app only):**
+
+- Python 3.10 or 3.11 (❗ Avoid Python 3.12+)
+- macOS, Linux, or Windows
+- Pip
 
 ---
 
-## 🛠️ Setup Instructions (Intel Mac)
+## 🛠️ Setup Instructions
 
-1. **Clone this repository**
+1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/your-username/conjunctivitis-app.git
-   cd conjunctivitis-app
+   git clone https://github.com/your-username/eyedentify-ai-app.git
+   cd eyedentify-ai-app
    ```
 
-2. **Create and activate virtual environment**
+2. **(Optional) Create and activate virtual environment**
 
    ```bash
    python3 -m venv venv
    source venv/bin/activate
    ```
 
-3. **Install dependencies**
+3. **Install minimal dependencies**
 
    ```bash
    pip install -r requirements.txt
    ```
 
-4. **Download your trained model**
-
-   Place your model weights file (e.g., `resnet18_weights.pth`) in the project folder.
-
-   Make sure `app.py` matches your model structure:
-
-   ```python
-   from torchvision import models
-   model = models.resnet18(pretrained=False)
-   model.fc = torch.nn.Linear(model.fc.in_features, 1)
-   model.load_state_dict(torch.load("resnet18_weights.pth", map_location=torch.device('cpu')))
-   ```
-
-5. **Run the Flask app**
+4. **Run the Flask web server**
 
    ```bash
    python app.py
    ```
 
-6. **Visit the app**
-   Open your browser and go to [http://127.0.0.1:5000](http://127.0.0.1:5000)
+5. **Open in your browser:**
+
+   [http://127.0.0.1:5000](http://127.0.0.1:5000)
 
 ---
 
 ## 🧪 How It Works
 
-* The frontend accesses your webcam and draws an oval where your face should go.
-* When you click 📸, it captures an image and sends it to the backend.
-* The backend:
+1. The **browser** captures your image and sends it to the Flask server.
+2. Flask pre-processes the image and forwards it to the **Gradio model endpoint** on Hugging Face:
 
-  * Uses MediaPipe to detect eye landmarks
-  * Crops left and right eye regions
-  * Preprocesses each crop
-  * Runs them through a PyTorch model
-  * Returns the probability of conjunctivitis for each eye
-* The frontend displays the results clearly on screen.
+   * Detects facial landmarks
+   * Crops and analyzes both eyes
+   * Runs ResNet18 on each crop
+   * Generates Grad-CAM heatmaps
+3. The results — probabilities and visual explanations — are returned to the browser.
 
 ---
 
-## 🧾 Dependencies (from `requirements.txt`)
+## 🌐 Cloud Model Hosting (Hugging Face Spaces)
+
+The AI model is deployed at:
 
 ```
-Flask
-torch
-torchvision
-torchaudio
-mediapipe
-numpy
-Pillow
-opencv-python
+https://huggingface.co/spaces/luckyjain1/eyedentify-ai-model
 ```
+
+This Space:
+
+* Uses MediaPipe for facial landmark detection
+* Crops and preprocesses eye regions
+* Runs predictions with ResNet18
+* Generates Grad-CAM++ overlays
+* Returns all results via JSON
 
 ---
 
-## 📦 Folder Structure
+## 📁 Folder Structure
 
 ```
-conjunctivitis-app/
-├── app.py
+eyedentify-ai-app/
+├── app.py                 # Flask server
 ├── templates/
-│   └── index.html
+│   └── index.html         # Main UI
 ├── static/
-│   └── script.js
-├── resnet18_weights.pth
-├── requirements.txt
-└── README.md
+│   └── script.js          # Camera + interaction logic
+├── requirements.txt       # Trimmed dependencies
+└── README.md              # You're reading it
 ```
 
----
+## 🧠 Technical Highlights
 
-## 🧠 Notes
-
-* This version uses CPU for inference. For GPU, modify the model loading and use `map_location='cuda'` if available.
-* Currently uses only MediaPipe's first detected face.
-* TorchScript or ONNX conversion is supported if you plan to port to mobile.
+* **Architecture**: Decoupled frontend/backend — lightweight Flask handles UI, heavy inference runs serverlessly on Hugging Face.
+* **Explainability**: Grad-CAM++ provides visual attribution maps for transparency.
+* **Efficiency**: Eye crops are extracted from a single face using MediaPipe's landmark mesh.
 
 ---
 
-## 📬 Contact
+## 📸 Sample Output
 
-Built by \[Your Name]. Feel free to reach out with questions or suggestions!
+> A Grad-CAM visualization will appear for each eye region, highlighting model attention on inflamed or discolored areas.
+
+---
