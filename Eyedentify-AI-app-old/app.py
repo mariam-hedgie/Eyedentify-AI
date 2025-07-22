@@ -1,4 +1,8 @@
 from flask import Flask, render_template, request, jsonify
+import base64
+import io
+from PIL import Image
+from gradio_client import Client
 
 app = Flask(__name__)
 
@@ -7,7 +11,6 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
-from gradio_client import Client
 
 @app.route('/predict', methods=['POST'])
 def predict():
@@ -26,10 +29,24 @@ def predict():
         if not base64_image.startswith("data:image"):
             return jsonify({"error": "Expected full base64 image string with data:image/... prefix"}), 400
 
-        # Use Gradio client
+        # Strip the header and decode
+        header, encoded = base64_image.split(",", 1)
+        image_bytes = base64.b64decode(encoded)
+
+        # Open image and convert to RGB
+        img = Image.open(io.BytesIO(image_bytes)).convert("RGB")
+
+        # Re-encode to base64 JPEG
+        buffered = io.BytesIO()
+        img.save(buffered, format="JPEG")
+        reencoded_bytes = buffered.getvalue()
+        reencoded_base64 = base64.b64encode(reencoded_bytes).decode('utf-8')
+        final_base64_image = f"data:image/jpeg;base64,{reencoded_base64}"
+
+        # Gradio client call (send clean RGB image)
         client = Client("luckyjain1/eyedentify-ai-model")
         hf_result = client.predict(
-            base64_str=base64_image,
+            final_base64_image,
             api_name="/predict"
         )
 
