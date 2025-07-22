@@ -78,6 +78,8 @@ captureBtn.onclick = () => {
 // ANALYZE button logic
 analyzeBtn.onclick = () => {
 
+  loader.style.display = 'block';  // SHOW loader
+
   fetch('/predict', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -87,8 +89,11 @@ analyzeBtn.onclick = () => {
 
   .then(response => response.json())
   .then(data => {
+
+    loader.style.display = 'none';  // HIDE loader (new line)
+
     if (data.error) {
-      showResultOnLeft(`❌ Error: ${data.error}`);
+      showResultOnLeft(`Error: ${data.error}`);
     } else {
       const leftProb = Math.round(data.left_eye_prob * 100);
       const rightProb = Math.round(data.right_eye_prob * 100);
@@ -99,10 +104,10 @@ analyzeBtn.onclick = () => {
 
       if (avgProb >= 60) {
         label = 'Likely Conjunctivitis';
-        advice = '⚠️ Please consult an eye specialist.';
+        advice = '⚠️ Please consult an eye specialist immediately.';
       } else if (avgProb >= 40) {
         label = 'Uncertain';
-        advice = '🧐 You’re close to the threshold — monitor symptoms or consult if unsure.';
+        advice = '🧐 You’re close to the threshold — monitor symptoms and consult if unsure.';
       } else {
         label = 'Likely Normal';
         advice = '✅ No strong signs of conjunctivitis. Keep eyes clean and healthy!';

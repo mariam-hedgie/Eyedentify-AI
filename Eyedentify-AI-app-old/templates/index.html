@@ -172,6 +172,22 @@
       color: #333;
       text-align: center;
     }
+
+    #loader {
+    border: 6px solid #e5e7eb;
+    border-top: 6px solid #2563eb;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+    margin: 20px auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
   </style>
 </head>
 <body>
@@ -253,9 +269,13 @@
       </div>
     </div>
 
+    <div id="loader" style="display:none;"></div>
+
     <div class="result" id="leftResult" style="margin-top: 24px;"></div>
     <div class="result" id="rightResult" style="margin-top: 24px;"></div>
   </div>
+
+
 
 
   <script src="/static/script.js"></script>
