@@ -1,9 +1,4 @@
 Flask==3.1.1
-numpy<1.27
-torch==2.2.2
-torchvision==0.17.2
-mediapipe==0.10.14
-opencv-contrib-python==4.11.0.86
-grad-cam @ git+https://github.com/jacobgil/pytorch-grad-cam.git@781dbc0d16ffa95b6d18b96b7b829840a82d93d1
 requests
 gunicorn
+gradio-client==0.6.0

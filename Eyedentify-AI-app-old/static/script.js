@@ -117,9 +117,10 @@ analyzeBtn.onclick = () => {
       `;
       showResultOnLeft(message);
 
+
       // Save Grad-CAM images for later display
-      leftGradcam.src = `data:image/png;base64,${data.left_gradcam}`;
-      rightGradcam.src = `data:image/png;base64,${data.right_gradcam}`;
+      leftGradcam.src = data.left_gradcam;
+      rightGradcam.src = data.right_gradcam;
 
       function getEyeAdvice(prob, side) {
         if (prob >= 60) return `${side} Eye: High attention on redness — 📍 consult a doctor.`;
