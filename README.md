@@ -1,7 +1,8 @@
 # 👁️ Eyedentify-AI: Conjunctivitis Detection Using Deep Learning  
 **🚧 Status:** In Progress — Expected Completion: End July, 2025
+Update: Completed MVP on July 24, 2025!
 
-**Eyedentify-AI** is a tool that classifies red eye (conjunctivitis) from patient-submitted images. It combines medical image preprocessing, signal-based blur detection, and deep learning-based classification.  
+**Eyedentify-AI** is a tool that classifies red eye (conjunctivitis) from patient-submitted images. It combines image preprocessing, signal-based blur detection, and deep learning-based classification.  
 The goal is to build a fully functional and explainable AI workflow — from raw images to web deployment — tailored for real-world use.
 
 ---
@@ -18,18 +19,6 @@ The goal is to build a fully functional and explainable AI workflow — from raw
 | Dynamic filtering by class distribution      | Distribution-aware logic, automation |
 | Label mapping & blur logging     | pandas, data hygiene                 |
 | YOLOv8 eye detector: custom-trained             | Roboflow labeling, PyTorch training, inference logic        |
-
----
-
-## 🧠 Current Logic
-
-•	🔍 Preprocessing: Images are resized, normalized, and passed through an FFT-based blur detector.
-<br>
-•	🚫 Blur Filtering: Class-specific sharpness scores determine a dynamic threshold.
-<br>
-•	📦 Crop Engine: A custom-trained YOLOv8 model detects eyes from patient images.
-<br>
-•	🏷️ Label Mapping: Images are linked to labels; filtered outliers are logged and excluded.
 
 ---
 
@@ -55,29 +44,66 @@ The goal is to build a fully functional and explainable AI workflow — from raw
 
 ---
 
-# My Conjunctivitis App
+## Folder Structure
+.
+├── .vscode/
+│   └── settings.json            # VS Code workspace settings
+├── data/
+│   ├── raw/                     # Original patient images
+│   ├── filtered/                # Images that passed blur & quality filters
+│   ├── flagged/                 # Images flagged for manual review
+│   ├── processed/               
+│   └── split/            
+├── eyedentify-ai-app/           # Flask web app (see its own README)
+├── logs/
+│   ├── blurry_images.csv        
+│   └── filtered_images.csv      
+├── notebooks/
+│   ├── 01_explore_preprocess.ipynb  # Image stats & blur detection
+│   ├── 02_split_double_eyes.ipynb   
+│   └── 03_Cropping_Model.ipynb      
+├── plots/
+│   ├── fft_sharpness_histogram.png  # Sharpness distribution by class
+│   └── gradcam_visualizations.png   # Sample Grad-CAM++ heatmaps
+├── resnet_weights/
+│   └── resnet18_weights.pth      # Trained ResNet-18 checkpoint
+├── runs/                         
+├── scripts/
+│   ├── gradcam.py                # Standalone Grad-CAM++ visualization script
+│   └── old_webcam.py             # Legacy webcam-capture demo
+├── utils/
+│   ├── __pycache__/              # Python cache (auto-generated)
+│   └── preprocessing.py          # Resize, normalize, blur–filter functions
+├── .gitignore                    # Files/folders to ignore in Git
+├── conjunctivitis.zip            # Raw dataset
+├── README.md                     # This file: project overview & structure
+└── requirements.txt              # `pip install -r requirements.txt`
+
+---
+
+## Conjunctivitis Web App
 
 Here’s the end‐to‐end screening pipeline:
 
 ```mermaid
 flowchart TD
-  A["Capture webcam image"] --> B["Click \"Analyze\""]
-  B --> C["MediaPipe detects eye region"]
-  C --> D["Preprocess: resize to 224×224 & normalize"]
-  D --> E["ResNet18 inference → P(infected)"]
-
-  E --> F{"P(infected) ≥ 60%?"}
-  F -- Yes --> G["Likely Conjunctivitis"]
-  F -- No  --> H{"P(infected) ≥ 40%?"}
-  H -- Yes --> I["Near threshold: monitor or consult"]
-  H -- No  --> J["Likely Normal"]
-
-  E --> K["Generate Grad-CAM++ heatmap"]
-  K --> L["Overlay heatmap & display results"]
-
-  L --> M["Try Again ▶️"]
-  L --> N["Learn More 🔍"]
+    A["Capture webcam image"] --> B@{ label: "Click ANALYZE" }
+    B --> C["MediaPipe detects eye regions"]
+    C --> D["Preprocess: resize to 224×224 & normalize"]
+    D --> E["ResNet18 inference → P(infected)"]
+    E --> F{"P(infected) ≥ 60%?"} & K["Generate Grad-CAM++ heatmap"]
+    F -- Yes --> G["Likely Conjunctivitis"]
+    F -- No --> H{"P(infected) ≥ 40%?"}
+    H -- Yes --> I["Near threshold: monitor or consult"]
+    H -- No --> J["Likely Normal"]
+    K --> L["Overlay heatmap & display results"]
   ```
+
+  ---
+
+## Sample Output
+![Sample Output](Sample_output.png)
+
 
 ## 🔒 License
 This is a private project under active development by **Mariam Husain** as part of an independent initiative to build deployable, explainable AI tools for healthcare.
