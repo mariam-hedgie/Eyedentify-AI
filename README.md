@@ -45,43 +45,41 @@ The goal is to build a fully functional and explainable AI workflow — from raw
 ---
 
 ## Folder Structure
-<details>
 ```text
-.
-├── .vscode/
-│   └── settings.json            # VS Code workspace settings
-├── data/
-│   ├── raw/                     # Original patient images
-│   ├── filtered/                # Images that passed blur & quality filters
-│   ├── flagged/                 # Images flagged for manual review
-│   ├── processed/               
-│   └── split/            
-├── eyedentify-ai-app/           # Flask web app (see its own README)
-├── logs/
-│   ├── blurry_images.csv        
-│   └── filtered_images.csv      
-├── notebooks/
-│   ├── 01_explore_preprocess.ipynb  # Image stats & blur detection
-│   ├── 02_split_double_eyes.ipynb   
-│   └── 03_Cropping_Model.ipynb      
-├── plots/
-│   ├── fft_sharpness_histogram.png  # Sharpness distribution by class
-│   └── gradcam_visualizations.png   # Sample Grad-CAM++ heatmaps
-├── resnet_weights/
-│   └── resnet18_weights.pth      # Trained ResNet-18 checkpoint
-├── runs/                         
-├── scripts/
-│   ├── gradcam.py                # Standalone Grad-CAM++ visualization script
-│   └── old_webcam.py             # Legacy webcam-capture demo
-├── utils/
-│   ├── __pycache__/              # Python cache (auto-generated)
-│   └── preprocessing.py          # Resize, normalize, blur–filter functions
-├── .gitignore                    # Files/folders to ignore in Git
-├── conjunctivitis.zip            # Raw dataset
-├── README.md                     # This file: project overview & structure
-└── requirements.txt              # `pip install -r requirements.txt`
+    .
+    ├── .vscode/
+    │   └── settings.json            # VS Code workspace settings
+    ├── data/
+    │   ├── raw/                     # Original patient images
+    │   ├── filtered/                # Images that passed blur & quality filters
+    │   ├── flagged/                 # Images flagged for manual review
+    │   ├── processed/               
+    │   └── split/            
+    ├── eyedentify-ai-app/           # Flask web app (see its own README)
+    ├── logs/
+    │   ├── blurry_images.csv        
+    │   └── filtered_images.csv      
+    ├── notebooks/
+    │   ├── 01_explore_preprocess.ipynb  # Image stats & blur detection
+    │   ├── 02_split_double_eyes.ipynb   
+    │   └── 03_Cropping_Model.ipynb      
+    ├── plots/
+    │   ├── fft_sharpness_histogram.png  # Sharpness distribution by class
+    │   └── gradcam_visualizations.png   # Sample Grad-CAM++ heatmaps
+    ├── resnet_weights/
+    │   └── resnet18_weights.pth      # Trained ResNet-18 checkpoint
+    ├── runs/                         
+    ├── scripts/
+    │   ├── gradcam.py                # Standalone Grad-CAM++ visualization script
+    │   └── old_webcam.py             # Legacy webcam-capture demo
+    ├── utils/
+    │   ├── __pycache__/              # Python cache (auto-generated)
+    │   └── preprocessing.py          # Resize, normalize, blur–filter functions
+    ├── .gitignore                    # Files/folders to ignore in Git
+    ├── conjunctivitis.zip            # Raw dataset
+    ├── README.md                     # This file: project overview & structure
+    └── requirements.txt              # `pip install -r requirements.txt`
 ```
-</details>
 
 ---
 
