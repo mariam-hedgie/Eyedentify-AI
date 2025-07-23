@@ -20,7 +20,7 @@ from pathlib import Path
 # Safe for notebooks: use current working directory
 ROOT_DIR = Path.cwd()  # or manually specify Path("/your/project/root")
 DATA_DIR = ROOT_DIR / "data" / "filtered"
-MODEL_WEIGHTS = Path("/Users/mariamhusain/Desktop/eyedentify-ai/conjunctivitis-app/resnet18_weights.pth") #use local path
+MODEL_WEIGHTS = Path("/Users/mariamhusain/Desktop/resnet18_weights.pth") #use local path
 
 # Load image paths
 healthy_imgs = list((DATA_DIR / "healthy_eye").glob("*.jpg"))
@@ -55,7 +55,22 @@ cam = GradCAMPlusPlus(model=model, target_layers=target_layers)
 
 # %%
 fig, axes = plt.subplots(4, 5, figsize=(20, 16))
-plt.suptitle("Grad-CAM++ Visualizations (10 Healthy + 10 Infected)", fontsize=16)
+fig.suptitle(
+    "Grad-CAM++ Sample Visualizations (10 Healthy + 10 Infected)",
+    fontsize=16
+)
+
+# Explanatory line
+fig.text(
+    0.5,            # center horizontally
+    0.90,           # just below the suptitle
+    "The heatmap overlay (red regions) shows where the model is focusing its attention, "
+    "and the percentage is our model’s confidence of prediction for each eye image.",
+    ha='center',
+    fontsize=12,
+    color='gray'
+)
+
 
 # %%
 for idx, img_path in enumerate(image_paths):
@@ -64,9 +79,15 @@ for idx, img_path in enumerate(image_paths):
     input_tensor = transform(img_pil).unsqueeze(0)
 
     with torch.no_grad():
-        output = model(input_tensor)
-        prob = torch.sigmoid(output).item()
-        pred_label = 1 if prob > 0.5 else 0
+        logit = model(input_tensor).item()
+        prob_inf = torch.sigmoid(torch.tensor(logit)).item()
+        pred_label = 1 if prob_inf > 0.5 else 0
+
+    if pred_label == 1:
+        title = f"Infected ({prob_inf*100:.1f}% infected)"
+    else:
+        prob_healthy = (1 - prob_inf)
+        title = f"Healthy ({prob_healthy*100:.1f}% healthy)"
 
     target = [BinaryClassifierOutputTarget(pred_label)]
     grayscale_cam = cam(input_tensor=input_tensor, targets=target)[0]
@@ -75,11 +96,16 @@ for idx, img_path in enumerate(image_paths):
     ax = axes[idx // 5, idx % 5]
     ax.imshow(cam_image)
     ax.axis('off')
-    ax.set_title(f"{LABELS[pred_label]} ({prob * 100:.1f}%)", fontsize=10)
+    
+    ax.set_title(title, fontsize=10)
 
 # %%
 plt.tight_layout()
-plt.subplots_adjust(top=0.93)
+plt.subplots_adjust(top=0.85)
+output_dir  = Path('.') / 'plots'  
+output_file = output_dir / 'gradcam_visualizations.png'
+output_dir.mkdir(parents=True, exist_ok=True)
+plt.savefig(output_file)
 plt.show()
 
 
