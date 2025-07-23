@@ -174,21 +174,34 @@
       text-align: center;
     }
 
-    #loader {
-      border: 6px solid #e5e7eb;
-      border-top: 6px solid #2563eb;
-      border-radius: 50%;
-      width: 50px;
-      height: 50px;
-      animation: spin 1s linear infinite;
-      margin: 20px auto;
-    }
+/* Loader sits in flow, below the camera */
+#loader.loader {
+  display: none;              /* hidden until you show it */
+  width: 80%;                 /* same width as your camera wrapper */
+  max-width: 300px;           /* cap it so it never gets too wide */
+  height: 16px;               /* thickness of the stripe */
+  margin: 16px auto 0 auto;   /* 16px gap above, horizontally centered */
+  background: transparent;    /* transparent bg */
+  background-image:
+    linear-gradient(
+      45deg,
+      rgba(0,0,0,0.25) 25%,
+      transparent 25%,
+      transparent 50%,
+      rgba(0,0,0,0.25) 50%,
+      rgba(0,0,0,0.25) 75%,
+      transparent 75%,
+      transparent
+    );
+  background-size: 1em 1em;
+  animation: barStripe 1s linear infinite;
+}
 
-
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
+/* 2) Keyframes for the diagonal movement */
+@keyframes barStripe {
+  0%   { background-position: 1em 0; }
+  100% { background-position: 0 0; }
+}
 
     @media (max-width: 1024px) {
   body {
@@ -293,13 +306,11 @@
       </div>
     </div>
 
-    <div id="loader" style="display:none;"></div>
+    <div id="loader" class="loader"></div>
 
     <div class="result" id="leftResult" style="margin-top: 24px;"></div>
     <div class="result" id="rightResult" style="margin-top: 24px;"></div>
   </div>
-
-
 
 
   <script src="/static/script.js"></script>

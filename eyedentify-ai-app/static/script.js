@@ -77,7 +77,7 @@ captureBtn.onclick = () => {
 
 // ANALYZE button logic
 analyzeBtn.onclick = () => {
-
+  const loader = document.getElementById('loader');
   loader.style.display = 'block';  // SHOW loader
 
   fetch('/predict', {
