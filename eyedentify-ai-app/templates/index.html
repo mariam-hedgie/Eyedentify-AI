@@ -174,14 +174,13 @@
       text-align: center;
     }
 
-/* Loader sits in flow, below the camera */
 #loader.loader {
-  display: none;              /* hidden until you show it */
-  width: 80%;                 /* same width as your camera wrapper */
-  max-width: 300px;           /* cap it so it never gets too wide */
-  height: 16px;               /* thickness of the stripe */
-  margin: 16px auto 0 auto;   /* 16px gap above, horizontally centered */
-  background: transparent;    /* transparent bg */
+  display: none;              
+  width: 80%;                 
+  max-width: 300px;          
+  height: 16px;              
+  margin: 16px auto 0 auto;   
+  background: transparent;    
   background-image:
     linear-gradient(
       45deg,
@@ -197,7 +196,6 @@
   animation: barStripe 1s linear infinite;
 }
 
-/* 2) Keyframes for the diagonal movement */
 @keyframes barStripe {
   0%   { background-position: 1em 0; }
   100% { background-position: 0 0; }
@@ -236,11 +234,11 @@
         <strong>Your eyes tell a story — let AI help you read it.</strong><br />
         Just line up your face, tap the shutter, and get instant insights into possible conjunctivitis — in under 5 seconds.
       </p>
-      <ul>
-        <li><strong>⚡ Fast & Private</strong> — runs entirely on your device</li>
-        <li><strong>🧠 Smart AI</strong> — powered by ResNet + MediaPipe</li>
-        <li><strong>📋 Just a Screening</strong> — not a medical diagnosis</li>
-      </ul>
+      
+      <strong>⚡ Fast & Private</strong> — runs entirely on your device<br>
+      <strong>🧠 Smart AI</strong> — powered by ResNet + Google MediaPipe<br>
+      <strong>📋 Just a Screening</strong> — not a medical diagnosis
+      
     </div>
 
     <div id="resultContent" style="display: none;">
@@ -260,6 +258,9 @@
       <!-- Grad-CAM area, hidden by default -->
       <div id="gradcamContent" style="display: none; margin-top: 24px;">
         <p><strong>🧠 Grad-CAM Visualizations:</strong></p>
+        <div class="gradcam-intro" style="margin-top:24px; text-align:center; color:#475569;">
+          <p><strong>🔎 What you’re seeing:</strong> These heatmaps highlight areas of your eye the AI paid most attention to. The percentage is how confident the model is about its prediction.</p>
+        </div>
       
         <div style="display: flex; flex-wrap: wrap; gap: 24px; justify-content: center; margin-top: 12px;">
           
