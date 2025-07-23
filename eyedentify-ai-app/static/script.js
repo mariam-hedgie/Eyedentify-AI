@@ -133,13 +133,18 @@ analyzeBtn.onclick = () => {
         return `${side} Eye: Low risk — ✅ no concerning signs.`;
       }
       
-      document.getElementById('leftExplanation').textContent =
-        `🔬 ${leftProb}% chance. ` + getEyeAdvice(leftProb, "Left");
+      document.getElementById('leftExplanation').innerHTML = `
+  <p style="text-align:center; margin:0;"><strong>🔬 ${leftProb}% chance of infection.</strong></p>
+  <p style="text-align:left; margin:4px 0 0;">${getEyeAdvice(leftProb, "Left")}</p>
+`;
       
-      document.getElementById('rightExplanation').textContent =
-        `🔬 ${rightProb}% chance. ` + getEyeAdvice(rightProb, "Right");
+document.getElementById('rightExplanation').innerHTML = `
+<p style="text-align:center; margin:0;"><strong>🔬 ${rightProb}% chance of infection.</strong></p>
+<p style="text-align:left; margin:4px 0 0;">${getEyeAdvice(rightProb, "Right")}</p>
+`;
     }
-  });
+
+});
 };
 
 
