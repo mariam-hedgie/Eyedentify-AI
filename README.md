@@ -55,6 +55,30 @@ The goal is to build a fully functional and explainable AI workflow — from raw
 
 ---
 
+# My Conjunctivitis App
+
+Here’s the end‐to‐end screening pipeline:
+
+```mermaid
+flowchart TD
+  A["Capture webcam image"] --> B["Click \"Analyze\""]
+  B --> C["MediaPipe detects eye region"]
+  C --> D["Preprocess: resize to 224×224 & normalize"]
+  D --> E["ResNet18 inference → P(infected)"]
+
+  E --> F{"P(infected) ≥ 60%?"}
+  F -- Yes --> G["Likely Conjunctivitis"]
+  F -- No  --> H{"P(infected) ≥ 40%?"}
+  H -- Yes --> I["Near threshold: monitor or consult"]
+  H -- No  --> J["Likely Normal"]
+
+  E --> K["Generate Grad-CAM++ heatmap"]
+  K --> L["Overlay heatmap & display results"]
+
+  L --> M["Try Again ▶️"]
+  L --> N["Learn More 🔍"]
+  
+
 ## 🔒 License
 This is a private project under active development by **Mariam Husain** as part of an independent initiative to build deployable, explainable AI tools for healthcare.
 
