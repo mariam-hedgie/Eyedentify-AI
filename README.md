@@ -23,18 +23,6 @@ The goal is to build a fully functional and explainable AI workflow — from raw
 
 ---
 
-## 🔭 Planned Next Steps
-
-- 🧠 **Integrate ResNet18** into the Flask app for live inference  
-- 🎨 **Embed Grad-CAM++** overlays in the web UI  
-- 📱 **Polish front-end**: responsive layout, progress bar, error handling  
-- 🗂️ **Patient portal**: login, history, symptom timeline  
-- 🔄 **Retrain & augment** with expanded dataset & cross-validation  
-- 📦 **Deployment**: Docker container, CI/CD pipeline, cloud hosting  
-- 📝 **Finalize docs** & prepare for submission/publication  
-
----
-
 ## 🛠️ Tech Stack
 
 | Layer             | Technologies                                         |
@@ -88,6 +76,11 @@ The goal is to build a fully functional and explainable AI workflow — from raw
 
 ---
 
+## Sample Output
+![Sample Output](Sample_output.png)
+
+---
+
 ## Conjunctivitis Web App
 
 Here’s the end‐to‐end screening pipeline:
@@ -107,10 +100,6 @@ flowchart TD
   ```
 
   ---
-
-## Sample Output
-![Sample Output](Sample_output.png)
-
 
 ## 🔒 License
 This is a private project under active development by **Mariam Husain** as part of an independent initiative to build deployable, explainable AI tools for healthcare.
