@@ -45,6 +45,8 @@ The goal is to build a fully functional and explainable AI workflow — from raw
 ---
 
 ## Folder Structure
+<details>
+```text
 .
 ├── .vscode/
 │   └── settings.json            # VS Code workspace settings
@@ -78,6 +80,8 @@ The goal is to build a fully functional and explainable AI workflow — from raw
 ├── conjunctivitis.zip            # Raw dataset
 ├── README.md                     # This file: project overview & structure
 └── requirements.txt              # `pip install -r requirements.txt`
+```
+</details>
 
 ---
 
