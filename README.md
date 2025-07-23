@@ -7,40 +7,45 @@ The goal is to build a fully functional and explainable AI workflow — from raw
 
 ---
 
-## ✨ First 1 month Highlights  
+## ✨ 6 week Progress Highlights
 
-| Component                        | Skills Applied                      |
-|----------------------------------|--------------------------------------|
-| GitHub repo + folder setup       | Version control, modular pipeline design     |
-| Virtual environment setup        | Dependency management, reproducibility |
-| Image resizing (224×224)         | OpenCV, model input preparation  |
-| FFT-based blur detection         | NumPy, frequency domain analysis    |
-| Sharpness histogram visualization | Matplotlib, exploratory data analysis |
-| Dynamic filtering by class distribution      | Distribution-aware logic, automation |
-| Label mapping & blur logging     | pandas, data hygiene                 |
-| YOLOv8 eye detector: custom-trained             | Roboflow labeling, PyTorch training, inference logic        |
+| Component                                   | Skills Applied                                   |
+|---------------------------------------------|--------------------------------------------------|
+| Repository & environment setup              | GitHub, virtualenv, modular project structure    |
+| Exploratory preprocessing    | Jupyter, pandas, OpenCV, Matplotlib              |
+| Dataset split & double-eye handling     | pandas, scikit-learn                             |
+| FFT-based blur detection & logging          | NumPy, frequency-domain analysis, CSV I/O        |
+| Custom ResNet18 eye-crop model   | Roboflow annotation, PyTorch |
+| Data filtering & versioned logs             | pandas, automated pipelines                      |
+| Grad-CAM++ visualization                    | `pytorch_grad_cam`, PIL, Matplotlib              |
+| Flask prototype & webcam capture (old_webcam)| Flask, MediaPipe, JavaScript                     |
+| Responsive UI & loading indicators          | HTML/CSS, JS, CSS animations                     |
 
 ---
 
 ## 🔭 Planned Next Steps
 
-• Train ResNet18 baseline classifier 
-• Add Grad-CAM visualizations
-• Build Flask app (upload + webcam)     
-• Patient portal + symptom timeline      
-• Demo polish + final write-up           
+- 🧠 **Integrate ResNet18** into the Flask app for live inference  
+- 🎨 **Embed Grad-CAM++** overlays in the web UI  
+- 📱 **Polish front-end**: responsive layout, progress bar, error handling  
+- 🗂️ **Patient portal**: login, history, symptom timeline  
+- 🔄 **Retrain & augment** with expanded dataset & cross-validation  
+- 📦 **Deployment**: Docker container, CI/CD pipeline, cloud hosting  
+- 📝 **Finalize docs** & prepare for submission/publication  
 
 ---
 
 ## 🛠️ Tech Stack
 
-| Layer | Tech Stack |
-| ----- | -----------|
-| Preprocessing | Python, OpenCV, NumPy, pandas, Matplotlib |
-| Detection | YOLOv8 (Ultralytics), Roboflow annotations |
-| Classification | PyTorch, Torchvision |
-| Explainability | Grad-CAM (planned) |
-| Web Interface | Flask (planned), SQLite or JSON-based state tracking |
+| Layer             | Technologies                                         |
+|-------------------|------------------------------------------------------|
+| **Data & EDA**       | Python, OpenCV, NumPy, pandas, Matplotlib            |
+| **Detection**        | MediaPipe, ResNet18, Roboflow annotations           |
+| **Classification**   | PyTorch, Torchvision (ResNet18)                      |
+| **Explainability**   | Grad-CAM++ via `pytorch_grad_cam`                    |
+| **Web Interface**    | Flask, MediaPipe, HTML/CSS, JavaScript                |
+| **State & Storage**  | SQLite or JSON files for session & log tracking       |
+| **DevOps**           | Git, virtualenv, Docker, CI/CD (GitHub Actions)      |
 
 ---
 
