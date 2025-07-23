@@ -1,0 +1,22 @@
+# Python
+*.pyc
+__pycache__/
+
+# Virtual environments
+.venv/
+env/
+venv/
+
+# IDEs and editors
+.vscode/
+.idea/
+
+# PyTorch model weights
+*.pth
+
+# OS files
+.DS_Store
+
+# Flask cache
+instance/
+*.sqlite
