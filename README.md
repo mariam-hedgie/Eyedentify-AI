@@ -16,8 +16,7 @@ The goal is to build a fully functional and explainable AI workflow — from raw
 | Dataset split & double-eye handling     | pandas, scikit-learn                             |
 | FFT-based blur detection & logging          | NumPy, frequency-domain analysis, CSV I/O        |
 | Custom ResNet18 eye-crop model   | Roboflow annotation, PyTorch |
-| Data filtering & versioned logs             | pandas, automated pipelines                      |
-| Grad-CAM++ visualization                    | `pytorch_grad_cam`, PIL, Matplotlib              |
+| Grad-CAM++ visualization                    | `pytorch_grad_cam`, Matplotlib              |
 | Flask prototype & webcam capture (old_webcam)| Flask, MediaPipe, JavaScript                     |
 | Responsive UI & loading indicators          | HTML/CSS, JS, CSS animations                     |
 
