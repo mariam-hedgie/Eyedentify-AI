@@ -1,5 +1,5 @@
-# 👁️ Eyedentify-AI: Conjunctivitis Detection Using Deep Learning  
-**🚧 Status:** In Progress — Expected Completion: End July, 2025 <br>
+# Eyedentify-AI: Conjunctivitis Detection Using Deep Learning  
+** Status:** In Progress — Expected Completion: End July, 2025 <br>
 Update: Completed MVP on July 24, 2025!
 
 **Eyedentify-AI** is a tool that classifies red eye (conjunctivitis) from patient-submitted images. It combines image preprocessing, signal-based blur detection, and deep learning-based classification.  
@@ -7,22 +7,7 @@ The goal is to build a fully functional and explainable AI workflow — from raw
 
 ---
 
-## ✨ 6 week Progress Highlights
-
-| Component                                   | Skills Applied                                   |
-|---------------------------------------------|--------------------------------------------------|
-| Repository & environment setup              | GitHub, virtualenv, modular project structure    |
-| Exploratory preprocessing    | Jupyter, pandas, OpenCV, Matplotlib              |
-| Dataset split & double-eye handling     | pandas, scikit-learn                             |
-| FFT-based blur detection & logging          | NumPy, frequency-domain analysis, CSV I/O        |
-| Custom ResNet18 eye-crop model   | Roboflow annotation, PyTorch |
-| Grad-CAM++ visualization                    | `pytorch_grad_cam`, Matplotlib              |
-| Flask prototype & webcam capture (old_webcam)| Flask, MediaPipe, JavaScript                     |
-| Responsive UI & loading indicators          | HTML/CSS, JS, CSS animations                     |
-
----
-
-## 🛠️ Tech Stack
+## Tech Stack
 
 | Layer             | Technologies                                         |
 |-------------------|------------------------------------------------------|
@@ -100,14 +85,14 @@ flowchart TD
 
   ---
 
-## 🔒 License
+## License
 This is a private project under active development by **Mariam Husain** as part of an independent initiative to build deployable, explainable AI tools for healthcare.
 
 **All rights reserved © 2025 Mariam Husain.**
 Unauthorized use, copying, or distribution is strictly prohibited.
 
 For academic use, licensing, or collaboration:
-📩 [Contact Me](mailto:mariamh1121@gmail.com)
+ [Contact Me](mailto:mariamh1121@gmail.com)
 
 
 > This project is actively evolving. Logs, plots, and notebooks are structured for traceability and can be extended for medical imaging beyond conjunctivitis.
