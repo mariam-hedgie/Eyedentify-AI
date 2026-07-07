@@ -80,16 +80,23 @@ analyzeBtn.onclick = () => {
   const loader = document.getElementById('loader');
   loader.style.display = 'block';  // SHOW loader
 
+  // Abort if the backend (or the model Space it wakes) takes too long,
+  // so the loader never spins forever.
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 180000); // 3 min
+
   fetch('/predict', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ image: capturedImg.src })
+    body: JSON.stringify({ image: capturedImg.src }),
+    signal: controller.signal
   })
 
 
   .then(response => response.json())
   .then(data => {
 
+    clearTimeout(timeoutId);
     loader.style.display = 'none';  // HIDE loader (new line)
 
     if (data.error) {
@@ -144,7 +151,15 @@ document.getElementById('rightExplanation').innerHTML = `
 `;
     }
 
-});
+})
+  .catch(err => {
+    clearTimeout(timeoutId);
+    loader.style.display = 'none';  // always hide the loader on failure
+    const msg = err.name === 'AbortError'
+      ? 'The model is waking up (it sleeps when idle). Please wait a minute and try again.'
+      : 'Could not reach the model. It may be starting up — please try again in a minute.';
+    showResultOnLeft(msg);
+  });
 };
 
 

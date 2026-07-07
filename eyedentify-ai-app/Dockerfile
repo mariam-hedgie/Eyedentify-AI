@@ -27,5 +27,7 @@ COPY . /app/
 EXPOSE 5000
 
 # Command to run your Flask app (or your app's main script)
-CMD ["gunicorn", "-b", "0.0.0.0:5000", "app:app"]
+# --timeout 240: model inference on the HF Space can take >30s (gunicorn's
+# default), which would otherwise kill the worker and return a 502.
+CMD ["gunicorn", "-b", "0.0.0.0:5000", "--timeout", "240", "app:app"]
 

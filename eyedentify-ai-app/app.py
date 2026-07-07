@@ -6,6 +6,22 @@ from gradio_client import Client
 
 app = Flask(__name__)
 
+# The model runs on a HuggingFace Space that sleeps after ~48h idle.
+# Reuse a single client instead of rebuilding it (and re-fetching the Space
+# config) on every request.
+HF_SPACE = "luckyjain1/eyedentify-ai-model"
+_client = None
+
+
+def get_client():
+    global _client
+    if _client is None:
+        # Bump the underlying httpx timeout: the first inference after the
+        # Space wakes can be slow (model loading), and the default read
+        # timeout would otherwise abort it.
+        _client = Client(HF_SPACE, httpx_kwargs={"timeout": 150})
+    return _client
+
 
 @app.route('/')
 def index():
@@ -44,16 +60,26 @@ def predict():
         final_base64_image = f"data:image/jpeg;base64,{reencoded_base64}"
 
         # Gradio client call (send clean RGB image)
-        client = Client("luckyjain1/eyedentify-ai-model")
-        hf_result = client.predict(
-            final_base64_image,
-            api_name="/predict"
-        )
+        try:
+            client = get_client()
+            hf_result = client.predict(
+                final_base64_image,
+                api_name="/predict"
+            )
+        except Exception as e:
+            # Most common cause: the HF Space is asleep/cold-starting.
+            # Drop the cached client so the next request rebuilds it.
+            global _client
+            _client = None
+            return jsonify({
+                "error": "The model service is starting up (it sleeps when "
+                         "idle). Please wait a minute and try again."
+            }), 503
 
         return jsonify(hf_result)
 
     except Exception as e:
-        return jsonify({"error": f"Gradio client failed: {str(e)}"}), 500
+        return jsonify({"error": f"Prediction failed: {str(e)}"}), 500
 
 import socket
 
