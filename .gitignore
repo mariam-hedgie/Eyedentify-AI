@@ -10,3 +10,5 @@ data/
 yolo-eye-detector/images/
 yolo-eye-detector/labels/
 conjunctivitis-app/resnet18_weights.pth
+# Model weights live on the Hugging Face Space (LFS), not GitHub
+hf-space/resnet18_weights.pth
