@@ -4,6 +4,7 @@ Update: Completed MVP on July 24, 2025!
 
 **Eyedentify-AI** is a tool that classifies red eye (conjunctivitis) from patient-submitted images. It combines image preprocessing, signal-based blur detection, and deep learning-based classification.  
 The goal is to build a fully functional and explainable AI workflow — from raw images to web deployment — tailored for real-world use.
+https://mariamh1121-eyedentify-ai.hf.space
 
 ---
 
